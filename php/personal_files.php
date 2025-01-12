@@ -1,30 +1,24 @@
 <?php
-// Include database configuration
 include('../connection/db_config.php');
 include('../layout/header.php');
 
-// Pagination logic
 $limit = 16; // Number of rows per page
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
 $start = ($page > 1) ? ($page * $limit) - $limit : 0;
 
-// Fetch total number of rows
 $totalQuery = "SELECT COUNT(*) as total FROM `users_data` WHERE email='$email'";
 $totalResult = mysqli_query($conn, $totalQuery);
 $totalRow = mysqli_fetch_assoc($totalResult);
 $total = $totalRow['total'];
 
-// Calculate total pages
 $pages = ceil($total / $limit);
 
-// Fetch data for the current page
 $query = "SELECT * FROM `users_data` WHERE email='$email' ORDER BY id DESC LIMIT $start, $limit";
 $result = mysqli_query($conn, $query);
 if (!$result) {
     die("Query Failed: " . mysqli_error($conn));
 }
 
-// Utility functions
 function formatFileSize($size)
 {
     if ($size >= 1024 * 1024) {
@@ -49,7 +43,6 @@ function getFileIcon($filename)
     return $icons[$extension] ?? $icons['default'];
 }
 
-// Handle file upload
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['file']) && isset($_POST['text_data'])) {
         $filename = $_FILES['file']['name'];
@@ -286,10 +279,8 @@ $(document).ready(function () {
         const fileSize = $(this).data('size');
         const textData = $(this).data('text_data');
 
-        // Attach file details to the context menu
         $contextMenu.data('file', { id: fileId, name: fileName, size: fileSize, text_data: textData });
 
-        // Show or hide the text_data option based on availability
         $contextMenu.find('[data-action="text_data"]').toggle(!!textData);
 
         // Calculate menu position
@@ -301,7 +292,6 @@ $(document).ready(function () {
         let top = e.pageY;
         let left = e.pageX;
 
-        // Adjust position if the menu goes outside the viewport
         if (e.pageX + menuWidth > windowWidth) {
             left = windowWidth - menuWidth - 10;
         }
@@ -316,12 +306,10 @@ $(document).ready(function () {
         });
     });
 
-    // Hide context menu on click outside
     $(document).on('click', function () {
         $contextMenu.hide();
     });
 
-    // Handle context menu actions
     $contextMenu.on('click', 'li', function () {
         const action = $(this).data('action');
         const file = $contextMenu.data('file');
@@ -382,7 +370,7 @@ $(document).ready(function () {
         let formData = new FormData(this);
 
         $.ajax({
-            url: './upload.php', // Ensure this path points to the correct location of upload.php
+            url: '../upload.php',
             type: 'POST',
             data: formData,
             processData: false,
@@ -409,7 +397,7 @@ $(document).ready(function () {
                         text: 'File uploaded successfully!',
                         icon: 'success'
                     }).then(() => {
-                        location.reload(); // Reload the page to refresh the file list
+                        location.reload(); 
                     });
                 } else {
                     Swal.fire({
