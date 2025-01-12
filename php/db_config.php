@@ -4,9 +4,9 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 $servername = "localhost";
-$username = "datasaver";
-$password = "Anique0ali@";
-$dbname = "datasaver_datasaver";
+$username = "";
+$password = "";
+$dbname = "";
 
 if (!function_exists('mysqli_connect')) {
     die("MySQLi extension is not enabled.");
