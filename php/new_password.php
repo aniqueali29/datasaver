@@ -112,14 +112,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['reset_password'])) {
         $update_query->bind_param("ss", $hashed_password, $email);
 
         if ($update_query->execute()) {
-            // Send password change confirmation email
             try {
                 $mail = new PHPMailer(true);
                 $mail->isSMTP();
         $mail->Host = 'mail.datasaver.online'; // SMTP server
         $mail->SMTPAuth = true;
-        $mail->Username = 'datasave@datasaver.online'; // SMTP username
-        $mail->Password = 'Anique0datasaver@'; // SMTP password
+        $mail->Username = ''; // SMTP username
+        $mail->Password = ''; // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port = 465;
 
@@ -155,8 +154,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['reset_password'])) {
                     });
                 </script>";
             }
-
-            // Clear session data after successful password reset
             session_unset();
             session_destroy();
 
