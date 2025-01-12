@@ -4,7 +4,6 @@ include('../connection/db_config.php');
 if (isset($_GET['link'])) {
     $shared_link = $_GET['link'];
 
-    // Validate shared link and check expiration
     $query = "SELECT sl.file_id, ud.filename, ud.email
               FROM shared_links sl
               INNER JOIN users_data ud ON sl.file_id = ud.id
