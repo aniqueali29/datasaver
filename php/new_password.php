@@ -76,15 +76,13 @@
 
 <?php
 session_start();
-require '../vendor/autoload.php'; // Include the Composer autoloader
+require '../vendor/autoload.php'; 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 include('../connection/db_config.php');
 
-// Ensure the user has verified the OTP before accessing this page
 if (!isset($_SESSION['reset_email']) || !isset($_SESSION['otp_verified']) || $_SESSION['otp_verified'] !== true) {
-    // Redirect to the OTP verification page if verification hasn't been completed
     header("Location: verify_reset_otp.php");
     exit;
 }
@@ -107,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['reset_password'])) {
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
         $email = $_SESSION['reset_email'];
 
-        // Update password in the database
+        // Update password 
         $update_query = $conn->prepare("UPDATE users SET password = ? WHERE email = ?");
         $update_query->bind_param("ss", $hashed_password, $email);
 
