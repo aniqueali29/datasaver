@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../vendor/autoload.php'; // Include the Composer autoloader
+require '../vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 include('../connection/db_config.php');
@@ -8,7 +8,6 @@ include('../connection/db_config.php');
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['reset'])) {
     $email = $_POST['email'];
 
-    // Check if email exists
     $check_query = $conn->prepare("SELECT id FROM users WHERE email = ?");
     $check_query->bind_param("s", $email);
     $check_query->execute();
@@ -79,12 +78,11 @@ function sendOtpEmail($email, $otp) {
         $mail->send();
         return true;
     } catch (Exception $e) {
-        // Fallback to Gmail settings
         try {
             $mail->clearAddresses();
             $mail->Host = 'smtp.gmail.com';
-            $mail->Username = 'aniqueali000@gmail.com';
-            $mail->Password = 'laaxmofdlxzxxara';
+            $mail->Username = '';
+            $mail->Password = '';
             $mail->setFrom('datasave@datasaver.online', 'Data Saver Support');
             $mail->send();
             return true;
