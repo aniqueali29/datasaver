@@ -1,9 +1,8 @@
 <?php
-ob_start(); // Start output buffering
-include './connection/db_config.php'; // Include your database connection file
+ob_start();
+include './connection/db_config.php'; 
 session_start();
 
-// Function to get the real IP address
 function getUserIP()
 {
     if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -15,7 +14,7 @@ function getUserIP()
     }
 }
 
-// Retrieve the IP address
+// Retrieve the ip
 $ip_address = getUserIP();
 if (empty($ip_address)) {
     die("Error: IP address is not set.");
@@ -23,38 +22,28 @@ if (empty($ip_address)) {
 
 error_log("Retrieved IP Address: " . $ip_address);
 
-// Initialize message count
 $message_count = 0;
 
-// Check if the user is logged in
 if (isset($_SESSION['email'])) {
-    // User is logged in
     $email = $_SESSION['email'];
 
-    // Fetch user's data
     $sql = "SELECT * FROM users WHERE email='$email'";
     $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
     $user = $result->fetch_assoc();
-    $name = $user['name']; // Assuming the user's name is stored in the 'name' column
+    $name = $user['name'];
 } else {
-    // Redirect to login.php if user is not found
     header("Location: ../php/login.php");
     exit;
 }
-
-    // Set message limit to unlimited for logged-in users
     $message_limit = PHP_INT_MAX;
 } else {
-    // User is not logged in
-    $name = "Join Us";
-    $message_limit = 15; // Set daily message limit
 
-    // Get the current date
+    $name = "Join Us";
+    $message_limit = 15;
     $current_date = date('Y-m-d');
 
-    // Count the number of messages posted by the user's IP address today
     $query = "SELECT COUNT(*) as message_count FROM ip_messages WHERE ip_address = ? AND DATE(created_at) = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ss", $ip_address, $current_date);
@@ -64,9 +53,8 @@ if ($result && $result->num_rows > 0) {
     $stmt->close();
 }
 
-date_default_timezone_set('Asia/Karachi'); // Set your timezone
+date_default_timezone_set('Asia/Karachi');
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message = $_POST['message'];
 
@@ -115,12 +103,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Message cannot be empty!";
     }
 }
-
-// Handle delete request
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_message_id'])) {
     $delete_id = $_POST['delete_message_id'];
 
-    // Verify if the message belongs to the current user/IP
     $query = "DELETE FROM ip_messages WHERE id = ? AND ip_address = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("is", $delete_id, $ip_address);
@@ -158,14 +143,12 @@ $products = mysqli_query($conn, $query);
 // Delete expired messages
 // $conn->query("DELETE FROM ip_messages WHERE delete_at < NOW()");
 
-// Fetch paginated messages for the user's IP address
 $query = "SELECT id, ip_address, message, created_at, delete_at FROM ip_messages WHERE ip_address = ? ORDER BY created_at DESC LIMIT $limit OFFSET $offset";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("s", $ip_address);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Get total number of messages for pagination
 $total_query = "SELECT COUNT(*) as total FROM ip_messages WHERE ip_address = ?";
 $stmt_total = $conn->prepare($total_query);
 $stmt_total->bind_param("s", $ip_address);
@@ -176,7 +159,7 @@ $stmt_total->close();
 
 $total_pages = ceil($total_messages / $limit);
 
-ob_end_flush(); // Flush the output buffer and send output
+ob_end_flush(); 
 ?>
 
 
@@ -195,16 +178,13 @@ ob_end_flush(); // Flush the output buffer and send output
         
 
 <style>
-/* General Container Styling */
 .container {
     max-width: 90%;
     margin: auto;
     padding: 15px;
 }
 
-/* Message Card Styling */
 .message-card {
-    /*background: linear-gradient(to bottom right, #e3f2fd, #bbdefb);*/
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     margin-bottom: 30px;
@@ -213,11 +193,9 @@ ob_end_flush(); // Flush the output buffer and send output
 }
 
 .message-card:hover {
-    /*transform: translateY(-10px);*/
     box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
 }
 
-/* Message Header Styling */
 .message-header {
     background: #5985b9;
     color: #ffffff;
@@ -252,7 +230,6 @@ ob_end_flush(); // Flush the output buffer and send output
     box-shadow: 0px 5px 10px rgba(66, 165, 245, 0.4);
 }
 
-/* Message Content Styling */
 .message-content {
     padding: 25px;
     font-size: 1.1em;
@@ -262,7 +239,6 @@ ob_end_flush(); // Flush the output buffer and send output
     border-radius: 0 0 15px 15px;
 }
 
-/* Message Footer Styling */
 .message-footer {
     background: linear-gradient(90deg, #f3f6f9, #e3eaf2);
     padding: 15px 20px;
@@ -346,7 +322,6 @@ ob_end_flush(); // Flush the output buffer and send output
         transform: translateY(-3px);
     }
 
-/* Modal Header */
 .modal-header {
     background: #5985B9;
     color: white;
@@ -388,7 +363,6 @@ ob_end_flush(); // Flush the output buffer and send output
     opacity: 1;
 }
 
-/* Modal Footer */
 .modal-footer {
     background: #ffff;
     color: #555555;
@@ -402,8 +376,6 @@ ob_end_flush(); // Flush the output buffer and send output
     overflow: hidden;
 }
 
-
-/* Buttons */
 .modal-footer .btn {
     font-size: 16px;
     font-weight: bold;
@@ -436,7 +408,6 @@ ob_end_flush(); // Flush the output buffer and send output
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
- /* Wrapped Content Styling */
     .message-content {
         padding: 25px;
         font-size: 1.1em;
@@ -474,7 +445,6 @@ ob_end_flush(); // Flush the output buffer and send output
         box-shadow: 0px 5px 10px rgba(66, 165, 245, 0.4);
     }
     
-       /* Message Header Styling */
     .message-header {
         background: #5985b9;
         color: #ffffff;
@@ -487,7 +457,6 @@ ob_end_flush(); // Flush the output buffer and send output
         border-bottom: 4px solid #82B959;
     }
 
-/* Toggle Button Styling */
 .toggle-wrap {
     position: absolute;
     left: 88%;
@@ -536,7 +505,6 @@ input:checked + .slider:before {
     transform: translateX(24px);
 }
 
-/* Wrapped Content Styling */
 .message-content {
     padding: 25px;
     font-size: 1.1em;
@@ -590,7 +558,6 @@ input:checked + .slider:before {
                                 echo '<li class="nav-but"><a href="#" class="dropdown-item">Profile</a></li>';
                                 echo '<li class="nav-but"><a href="./php/logout.php" class="dropdown-item">Logout</a></li>';
                             } else {
-                                // User is not logged in, show the Signup & Login buttons
                                 echo '<li class="nav-but"><a href="./php/signup.php" class="dropdown-item">Sign Up</a></li>';
                                 echo '<li class="nav-but"><a href="./php/login.php" class="dropdown-item">Login</a></li>';
                             }
@@ -770,11 +737,9 @@ input:checked + .slider:before {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 
     <script>
-        // Scroll-Up Button Functionality
         const scrollUpBtn = document.getElementById("scrollUpBtn");
 
         window.onscroll = function () {
-            // Show button when scrolled down 300px
             if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
                 scrollUpBtn.style.display = "block";
             } else {
@@ -783,7 +748,6 @@ input:checked + .slider:before {
         };
 
         scrollUpBtn.onclick = function () {
-            // Scroll back to the top smoothly
             window.scrollTo({
                 top: 0,
                 behavior: "smooth"
@@ -881,13 +845,10 @@ input:checked + .slider:before {
         }
     </script>
     <script>
-
-        // Automatically focus the input field when the modal is shown
         $('#messageModal').on('shown.bs.modal', function () {
             $('#messageInput').focus();
         });
-        
-        // Submit the form when Enter key is pressed
+    
         $('#messageInput').keypress(function (e) {
             if (e.which === 13 && !e.shiftKey) { // Enter key pressed
                 e.preventDefault();
@@ -897,17 +858,14 @@ input:checked + .slider:before {
     </script>
 
     <script>
-            // Example to dynamically show/hide the sticky button based on scroll position
             window.addEventListener('scroll', function() {
         const stickyButton = document.querySelector('.sticky-button');
         if (window.scrollY > 100) {
-                stickyButton.style.display = 'block'; // Show the button when scrolled down
+                stickyButton.style.display = 'block'; 
         } else {
-                stickyButton.style.display = 'none'; // Hide the button when at the top
+                stickyButton.style.display = 'none';
         }
     });
-
-            // Ensure the button is initially visible
             document.addEventListener('DOMContentLoaded', function() {
                 document.querySelector('.sticky-button').style.display = 'block';
     });
@@ -918,10 +876,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const messageInput = document.getElementById('messageInput');
     const lineNumbers = document.getElementById('lineNumbers');
 
-    // Function to update line numbers
     const updateLineNumbers = () => {
         const totalLines = messageInput.value.split('\n').length; // Get number of lines
-        lineNumbers.innerHTML = ''; // Clear existing numbers
+        lineNumbers.innerHTML = ''; 
 
         for (let i = 1; i <= totalLines; i++) {
             const line = document.createElement('pre');
@@ -930,31 +887,24 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    // Sync scrolling between textarea and line numbers
     messageInput.addEventListener('scroll', () => {
         lineNumbers.scrollTop = messageInput.scrollTop; // Sync scroll
     });
 
-    // Update line numbers on input
     messageInput.addEventListener('input', updateLineNumbers);
 
-    // Initialize line numbers
     updateLineNumbers();
 });
 
 
-
-// Function to count the number of lines in the textarea
 function countLines() {
     var text = document.getElementById('messageInput').value;
     var lines = text.split('\n').length;
     document.getElementById('lineCount').textContent = "Total Lines: " + lines;
 }
 
-// Add event listener to update line count as user types
 document.getElementById('messageInput').addEventListener('input', countLines);
 
-// Initialize line count on modal open
 document.getElementById('messageModal').addEventListener('shown.bs.modal', function() {
     countLines(); // Update line count when modal is opened
 });
@@ -963,19 +913,16 @@ document.getElementById('messageModal').addEventListener('shown.bs.modal', funct
 
 <script>
 $(document).ready(function () {
-    // Ensure the message input is focused when the modal is shown
     $('#messageModal').on('shown.bs.modal', function () {
         $('#messageInput').focus();
     });
 
-    // Handle the button click to submit the form
     $('#postMessageBtn').on('click', function () {
         $('#messageForm').submit();
     });
 
-    // Form submission with AJAX
     $('#messageForm').on('submit', function (e) {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault(); 
 
         const message = $('#messageInput').val();
         if (message.trim() === '') {
@@ -983,7 +930,6 @@ $(document).ready(function () {
             return;
         }
 
-        // AJAX request to submit the message
         $.ajax({
             type: 'POST',
             url: '<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>',
