@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <!-- Include SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="../css/signup.css">
     <style>
@@ -17,7 +15,7 @@
             right: 20px;
             z-index: 9999;
             width: 300px;
-            display: none; /* Hidden by default */
+            display: none; 
         }
     </style>
 </head>
@@ -59,7 +57,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script>
-    // Function to toggle password visibility
     function togglePasswordVisibility() {
         var password = document.getElementById("password");
         var confirmPassword = document.getElementById("confirm_password");
@@ -72,7 +69,6 @@
         }
     }
 
-    // Function to show alert with custom message
     function showError(message) {
         document.getElementById("alert-message").innerText = message;
         document.getElementById("error-alert").style.display = "block";
@@ -84,9 +80,9 @@
 </html>
 
 <?php
-session_start(); // Start session at the top
+session_start(); 
 
-require '../vendor/autoload.php'; // Include the Composer autoloader
+require '../vendor/autoload.php'; 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -98,13 +94,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
-    // Check if passwords match
     if ($password !== $confirm_password) {
         echo "<script>showError('Passwords do not match!');</script>";
         exit;
     }
 
-    // Check if email already exists
     $check_query = $conn->prepare("SELECT id FROM users WHERE email = ?");
     $check_query->bind_param("s", $email);
     $check_query->execute();
@@ -141,7 +135,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
 
 $conn->close();
 
-// Function to send OTP email
 function sendOtpEmail($email, $otp) {
     $mail = new PHPMailer(true);
     
@@ -150,20 +143,17 @@ function sendOtpEmail($email, $otp) {
     $mail->Debugoutput = 'error_log';  // Output debug information to the error log
     
     try {
-        // Primary Server settings (support@datasaver.online)
         $mail->isSMTP();
-        $mail->Host = 'mail.datasaver.online'; // SMTP server
+        $mail->Host = ''; // SMTP server
         $mail->SMTPAuth = true;
-        $mail->Username = 'datasave@datasaver.online'; // SMTP username
-        $mail->Password = 'Anique0datasaver@'; // SMTP password
+        $mail->Username = ''; // SMTP username
+        $mail->Password = ''; // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port = 465;
 
-        // Set sender and recipient
         $mail->setFrom('support@datasaver.online', 'Data Saver Account Verification');
         $mail->addAddress($email);
         
-        // Email content
         $mail->isHTML(true);
         $mail->Subject = 'Your OTP Code for Data Saver Account Verification';
         $mail->Body = "
@@ -185,41 +175,35 @@ function sendOtpEmail($email, $otp) {
                 </div>
             </div>";
 
-        // Attempt to send the email
         if (!$mail->send()) {
             throw new Exception('Primary SMTP failed: ' . $mail->ErrorInfo);
         }
 
-        return true; // Email sent successfully
+        return true;
 
     } catch (Exception $e) {
-        // Log the error from the primary server
         error_log('Primary SMTP Error: ' . $e->getMessage());
 
         // Attempt to send via Gmail if the primary server fails
         try {
-            // Clear addresses and reset PHPMailer
             $mail->clearAddresses();
             $mail->clearAttachments();
             
-            // Gmail SMTP settings
             $mail->Host = 'smtp.gmail.com';
-            $mail->Username = 'aniqueali000@gmail.com'; // Your Gmail account
-            $mail->Password = 'laaxmofdlxzxxara'; // Gmail password or App Password
+            $mail->Username = ''; // Your Gmail account
+            $mail->Password = ''; // Gmail password or App Password
             $mail->setFrom('support@datasaver.online', 'Data Saver Support');
             $mail->addAddress($email);
 
-            // Attempt to send the email via Gmail
             if (!$mail->send()) {
                 throw new Exception('Gmail SMTP failed: ' . $mail->ErrorInfo);
             }
 
-            return true; // Email sent successfully via Gmail
+            return true;
 
         } catch (Exception $e) {
-            // Log the error from Gmail
             error_log('Gmail SMTP Error: ' . $e->getMessage());
-            return false; // Failed to send email
+            return false; 
         }
     }
 }
