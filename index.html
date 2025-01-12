@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About DataSaver</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        header {
+            background: #4CAF50;
+            color: white;
+            padding: 20px 10%;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        section {
+            padding: 20px 10%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* About Section */
+        .about {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .about img {
+            max-width: 100%;
+            width: 45%;
+            border-radius: 10px;
+        }
+
+        .about-text {
+            width: 50%;
+        }
+
+        .about-text h2 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        /* Features Section */
+        .features {
+            text-align: center;
+        }
+
+        .features .feature {
+            display: inline-block;
+            width: 30%;
+            margin: 10px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .features .feature:hover {
+            background: #f1f1f1;
+        }
+
+        .features h3 {
+            color: #4CAF50;
+        }
+
+        /* FAQ Section */
+        .faq {
+            margin-top: 30px;
+        }
+
+        .faq h2 {
+            color: #4CAF50;
+        }
+
+        .faq-item {
+            margin-bottom: 20px;
+        }
+
+        .faq-item h4 {
+            cursor: pointer;
+            margin: 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .faq-item h4:hover {
+            background: #f1f1f1;
+        }
+
+        .faq-item .answer {
+            display: none;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            background: #fafafa;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .about {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .about img, .about-text {
+                width: 100%;
+            }
+
+            .features .feature {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to DataSaver</h1>
+        <p>Efficient data management, seamless sharing, and community connectivity.</p>
+    </header>
+
+    <section class="container">
+        <div class="about">
+            <img src="https://via.placeholder.com/500" alt="DataSaver Illustration">
+            <div class="about-text">
+                <h2>About DataSaver</h2>
+                <p>DataSaver is a community-driven platform designed to enable seamless sharing and management of data within the same network. Whether you're sharing files, collaborating with peers, or managing storage, DataSaver ensures efficiency and reliability.</p>
+                <p>With advanced technology and a user-friendly interface, DataSaver bridges the gap between functionality and simplicity.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container features">
+        <h2>Core Features</h2>
+        <div class="feature">
+            <h3>Fast File Sharing</h3>
+            <p>Share files effortlessly across the network without delays.</p>
+        </div>
+        <div class="feature">
+            <h3>Secure Data Management</h3>
+            <p>Keep your data safe with end-to-end encryption and backups.</p>
+        </div>
+        <div class="feature">
+            <h3>Community Connectivity</h3>
+            <p>Collaborate with peers in real-time for maximum productivity.</p>
+        </div>
+    </section>
+
+    <section class="container faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <h4>What is DataSaver?</h4>
+            <div class="answer">
+                <p>DataSaver is a platform for efficient and secure data sharing within a network.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <h4>How secure is DataSaver?</h4>
+            <div class="answer">
+                <p>DataSaver employs end-to-end encryption and periodic backups to ensure your data is safe.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <h4>Is DataSaver free?</h4>
+            <div class="answer">
+                <p>Yes, DataSaver is free for basic use, with premium features available for advanced users.</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // FAQ Toggle Script
+        document.querySelectorAll('.faq-item h4').forEach((faqHeader) => {
+            faqHeader.addEventListener('click', () => {
+                const answer = faqHeader.nextElementSibling;
+                answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+            });
+        });
+    </script>
+</body>
+</html>
