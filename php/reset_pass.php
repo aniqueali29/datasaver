@@ -49,12 +49,11 @@ function sendOtpEmail($email, $otp) {
     $mail = new PHPMailer(true);
     
     try {
-        // SMTP settings for support@datasaver.online
         $mail->isSMTP();
-        $mail->Host = 'mail.datasaver.online'; // SMTP server
+        $mail->Host = ''; // SMTP server
         $mail->SMTPAuth = true;
-        $mail->Username = 'datasave@datasaver.online'; // SMTP username
-        $mail->Password = 'Anique0datasaver@'; // SMTP password
+        $mail->Username = ''; // SMTP username
+        $mail->Password = ''; // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port = 465;
 
@@ -62,8 +61,7 @@ function sendOtpEmail($email, $otp) {
         $mail->addAddress($email);
         $mail->isHTML(true);
         $mail->Subject = 'Reset Your Password - OTP Code';
-        
-        // HTML content for a beautiful but lightweight email
+
         $mail->Body = "
         <div style='font-family: Arial, sans-serif; max-width: 400px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;'>
             <h2 style='text-align: center; color: #4CAF50;'>Password Reset Request</h2>
