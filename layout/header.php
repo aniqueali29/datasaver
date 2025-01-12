@@ -20,14 +20,11 @@ if ($result && $result->num_rows > 0) {
     exit;
 }
 
-// Define maximum file size in bytes (100MB)
-define('MAX_FILE_SIZE', 200 * 2048 * 2048); // 100MB in bytes
+define('MAX_FILE_SIZE', 200 * 2048 * 2048);
 
-// Upload file and text
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['file']) && isset($_POST['text'])) {
     $response = array('success' => false, 'message' => '');
 
-    // Check for file upload errors
     if ($_FILES['file']['error'] !== UPLOAD_ERR_OK) {
         $response['message'] = "File upload failed with error code: " . $_FILES['file']['error'];
     } elseif ($_FILES['file']['size'] > MAX_FILE_SIZE) {
@@ -40,7 +37,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['file']) && isset($_PO
         $upload_datetime = date('Y-m-d h:i:s A');
         $text = $_POST['text'];
 
-        // Move uploaded file to uploads directory
         if (move_uploaded_file($tmp_name, "../uploads/" . $filename)) {
             // Insert file info and text into database along with upload date and time
             $sql = "INSERT INTO users_data (email, filename, filetype, filesize, upload_datetime, text_data) VALUES ('$email', '$filename', '$filetype', $filesize, '$upload_datetime', '$text')";
@@ -59,13 +55,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['file']) && isset($_PO
     exit;
 }
 
-// Update Data both Files & Text
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_data'])) {
     $id = $_POST['id'];
     $text = $_POST['text'];
     $response = array('success' => false, 'message' => '');
 
-    // Check if a new file is uploaded
     if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
         if ($_FILES['file']['size'] > MAX_FILE_SIZE) {
             $response['message'] = "File size exceeds the 100MB limit.";
@@ -76,16 +70,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_data'])) {
             $filesize = $_FILES['file']['size'];
             $upload_datetime = date('Y-m-d h:i:s');
 
-            // Move uploaded file to uploads directory
-            if (move_uploaded_file($tmp_name, "uploads/" . $filename)) {
-                // Update file info and text in the database
+            if (move_uploaded_file($tmp_name, "../uploads/" . $filename)) {
                 $sql = "UPDATE users_data SET filename='$filename', filetype='$filetype', filesize=$filesize, upload_datetime='$upload_datetime', text_data='$text' WHERE id=$id";
             } else {
                 $response['message'] = "Failed to move uploaded file.";
             }
         }
     } else {
-        // Update only text data if no new file is uploaded
         $sql = "UPDATE users_data SET text_data='$text' WHERE id=$id";
     }
 
@@ -157,7 +148,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_data'])) {
                             if (isset($_SESSION['email'])) {
                                 echo '<li class="nav-but"><a href="logout.php" class="dropdown-item">Logout</a></li>';
                             } else {
-                                // User is not logged in, show the Signup & Login buttons
                                 echo '<li class="nav-but"><a href="signup.php" class="dropdown-item">Sign Up</a></li>';
                                 echo '<li class="nav-but"><a href="login.php" class="dropdown-item">Login</a></li>';
                             }
