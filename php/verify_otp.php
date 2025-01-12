@@ -1,5 +1,5 @@
 <?php
-session_start(); // Start session
+session_start(); 
 
 require '../vendor/autoload.php'; // Include the Composer autoloader
 use PHPMailer\PHPMailer\PHPMailer;
@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['verify'])) {
 
         // Debug: Output stored OTP and entered OTP
         error_log("Stored OTP: $otp"); // Log the stored OTP
-        error_log("Entered OTP: $entered_otp"); // Log the entered OTP
+        error_log("Entered OTP: $entered_otp"); 
 
         // Validate the entered OTP
         if ($entered_otp == $otp) {
@@ -53,14 +53,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['verify'])) {
                             $mail = new PHPMailer(true);
 
         $mail->isSMTP();
-        $mail->Host = 'mail.datasaver.online'; // SMTP server
+        $mail->Host = ''; // SMTP server
         $mail->SMTPAuth = true;
-        $mail->Username = 'datasave@datasaver.online'; // SMTP username
-        $mail->Password = 'Anique0datasaver@'; // SMTP password
+        $mail->Username = ''; // SMTP username
+        $mail->Password = ''; // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port = 465;
 
-                            // Set the email content
                             $mail->setFrom('datasave@datasaver.online', 'DataSaver Support');
                             $mail->addAddress($email, $name);
                             $mail->isHTML(true);
@@ -114,12 +113,10 @@ $conn->close();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <title>Verify OTP</title>
     <link rel="stylesheet" href="../css/signup.css">
-    <!-- Include SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <?php
-        // Display any error message
         if (isset($_SESSION['error_message'])) {
             echo "<script>
                 Swal.fire({
@@ -129,7 +126,6 @@ $conn->close();
                     showConfirmButton: true
                 });
             </script>";
-            // Unset the error message after displaying
             unset($_SESSION['error_message']);
         }
 
@@ -145,7 +141,6 @@ $conn->close();
                             window.location.href = 'login.php'; // Redirect to login page
                         });
             </script>";
-            // Unset the success message after displaying
             unset($_SESSION['success_message']);
         }
     ?>
