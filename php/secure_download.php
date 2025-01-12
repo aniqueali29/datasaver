@@ -14,15 +14,13 @@ ob_start();
 <body>
 
 <?php
-// Adjusted file storage path
 $fileStorage = __DIR__ . '/../uploads/';
 
 if (isset($_GET['file'])) {
-    $fileName = basename($_GET['file']); // Sanitize input
+    $fileName = basename($_GET['file']);
     $filePath = $fileStorage . $fileName;
 
     if (file_exists($filePath)) {
-        // Serve the file for download
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename="' . $fileName . '"');
