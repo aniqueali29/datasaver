@@ -17,13 +17,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['reset'])) {
         // Generate a random OTP
         $otp = rand(100000, 999999);
 
-        // Store the OTP and email in session
         $_SESSION['reset_otp'] = $otp;
         $_SESSION['reset_email'] = $email;
 
         // Send OTP email
         if (sendOtpEmail($email, $otp)) {
-            // Redirect with success message
             $_SESSION['info'] = 'An OTP has been sent to your email for password reset.';
             header("Location: verify_reset_otp.php");
             exit;
@@ -43,7 +41,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['reset'])) {
 
 $conn->close();
 
-// Function to send OTP email
 function sendOtpEmail($email, $otp) {
     $mail = new PHPMailer(true);
     
@@ -56,7 +53,7 @@ function sendOtpEmail($email, $otp) {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port = 465;
 
-        $mail->setFrom('datasave@datasaver.online', 'Data Saver Support');
+        $mail->setFrom('', 'Data Saver Support');//Email
         $mail->addAddress($email);
         $mail->isHTML(true);
         $mail->Subject = 'Reset Your Password - OTP Code';
