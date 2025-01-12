@@ -9,7 +9,6 @@ if (isset($_FILES['file'])) {
     $textData = $_POST['text'];
     $email = $_SESSION['email']; 
 
-    // Sanitize email for directory name (replace special characters)
     $sanitizedEmail = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $email);
 
     $filename = basename($file['name']);
@@ -17,13 +16,11 @@ if (isset($_FILES['file'])) {
     $filesize = $file['size'];
     $uploadDatetime = date('Y-m-d H:i:s');
     
-    // Create a user-specific directory
     $targetDir = "../uploads/personal_files/$sanitizedEmail/";
     $targetFile = $targetDir . $filename;
 
-    // Check if the directory exists, if not, create it
     if (!file_exists($targetDir)) {
-        mkdir($targetDir, 0777, true);  // Create the directory with proper permissions
+        mkdir($targetDir, 0777, true);  
     }
 
     if (move_uploaded_file($file['tmp_name'], $targetFile)) {
