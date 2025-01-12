@@ -2,21 +2,17 @@
 include('../connection/db_config.php');
 include('../layout/header.php');
 
-// Pagination logic
-$limit = 10; // Number of rows per page
+$limit = 10; 
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 1; // Get current page number from URL, default is 1
 $start = ($page > 1) ? ($page * $limit) - $limit : 0; // Calculate starting row
 
-// Fetch total number of rows
 $totalQuery = "SELECT COUNT(*) as total FROM `users_data` WHERE email='$email'";
 $totalResult = mysqli_query($conn, $totalQuery);
 $totalRow = mysqli_fetch_assoc($totalResult);
 $total = $totalRow['total'];
 
-// Calculate total pages
 $pages = ceil($total / $limit);
 
-// Fetch data for the current page
 $query = "SELECT * FROM `users_data` WHERE email='$email' ORDER BY id DESC LIMIT $start, $limit";
 $result = mysqli_query($conn, $query);
 if (!$result) {
@@ -76,14 +72,10 @@ if (!$result) {
 <td>
     <?php
     $textData = $row['text_data'];
-    // Check if there is any message text
     if (!empty($textData)) {
-        // Check if the text length is greater than 15 characters
         if (strlen($textData) > 15) {
-            // Truncate the text and add ellipsis
             $displayText = substr($textData, 0, 15) . '...';
             ?>
-            <!-- Display the truncated message, with a tooltip on hover and a click event to open a modal -->
             <span class="message-tooltip" 
                   data-fulltext="<?php echo htmlspecialchars($textData); ?>" 
                   data-bs-toggle="modal" 
@@ -92,7 +84,6 @@ if (!$result) {
             </span>
         <?php
         } else {
-            // Display the full text without truncation or modal trigger
             ?>
             <span>
                 <?php echo htmlspecialchars($textData); ?>
@@ -100,7 +91,6 @@ if (!$result) {
         <?php
         }
     } else {
-        // Display "NO MESSAGE POSTED!" if there is no message
         ?>
         <span class= "badge bg-danger">No Message Posted!</span>
     <?php
@@ -148,7 +138,6 @@ if (!$result) {
     </nav>
 </div>
 
-    <!-- Modal for displaying full message -->
 <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true" >
     <div class="modal-dialog">
         <div class="modal-content">
@@ -157,7 +146,6 @@ if (!$result) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="modalMessageContent">
-                <!-- Full message will be displayed here dynamically -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -211,12 +199,10 @@ if (!$result) {
 document.addEventListener('DOMContentLoaded', function () {
     const shareButtons = document.querySelectorAll('.share-btn');
 
-    // Attach click event to all share buttons
     shareButtons.forEach(button => {
         button.addEventListener('click', function () {
             const fileId = this.getAttribute('data-file-id'); // Get the file ID
 
-            // Show the SweetAlert loader
             Swal.fire({
                 title: 'Generating Link...',
                 text: 'Please wait while the shareable link is generated.',
@@ -226,7 +212,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
 
-            // Perform an AJAX request to generate the link
             fetch('generate_link.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -235,7 +220,6 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Link generation successful
                     Swal.fire({
                         title: 'Link Generated!',
                         text: 'Shareable link has been copied to clipboard.',
@@ -243,10 +227,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         confirmButtonText: 'OK'
                     });
 
-                    // Copy the link to the clipboard
                     navigator.clipboard.writeText(data.url);
                 } else {
-                    // Error in generating the link
                     Swal.fire({
                         title: 'Error',
                         text: data.message,
@@ -256,7 +238,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             })
             .catch(() => {
-                // Handle any network or server errors
                 Swal.fire({
                     title: 'Error',
                     text: 'Failed to generate the shareable link.',
