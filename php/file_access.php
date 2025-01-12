@@ -1,24 +1,20 @@
 <?php
 session_start();
-require_once 'db_connection.php'; // Include your DB connection file
+require_once 'db_connection.php';
 
-// Assume user is logged in
 $user_id = $_SESSION['user_id'] ?? 0;
 
 if ($user_id === 0) {
     die("You must be logged in to access this page.");
 }
 
-// Generate secure random token
 function generateToken($length = 32) {
     return bin2hex(random_bytes($length));
 }
 
-// File download handler
 if (isset($_GET['token'])) {
     $token = $_GET['token'];
 
-    // Validate token and fetch file path
     $stmt = $conn->prepare("SELECT file_path, user_id FROM file_downloads WHERE token = ?");
     $stmt->bind_param("s", $token);
     $stmt->execute();
@@ -27,14 +23,12 @@ if (isset($_GET['token'])) {
     if ($result->num_rows > 0) {
         $file = $result->fetch_assoc();
 
-        // Ensure user owns the file
         if ($file['user_id'] != $user_id) {
             die("Unauthorized access.");
         }
 
         $file_path = $file['file_path'];
 
-        // Check if file exists
         if (file_exists($file_path)) {
             // Serve the file for download
             header('Content-Description: File Transfer');
@@ -52,7 +46,6 @@ if (isset($_GET['token'])) {
     exit;
 }
 
-// Generate a shareable link
 if (isset($_POST['share'])) {
     $file_path = $_POST['file_path']; // File the user wants to share
     if (!file_exists($file_path)) {
@@ -62,7 +55,6 @@ if (isset($_POST['share'])) {
     // Generate a token
     $token = generateToken();
 
-    // Save token to database
     $stmt = $conn->prepare("INSERT INTO file_downloads (user_id, file_path, token) VALUES (?, ?, ?)");
     $stmt->bind_param("iss", $user_id, $file_path, $token);
     $stmt->execute();
