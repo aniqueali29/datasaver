@@ -47,13 +47,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['verify'])) {
         <h2 class="mb-4">Verify OTP</h2>
         
         <?php
-        // Display the informational message if it's set
         if (isset($_SESSION['info'])) {
             echo '<div class="alert alert-warning alert-dismissible fade show alert-position" role="alert">';
             echo '<strong>Notice!</strong> ' . htmlspecialchars($_SESSION['info']);
             echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
             echo '</div>';
-            // Clear the info message after displaying it once
             unset($_SESSION['info']);
         }
         ?>

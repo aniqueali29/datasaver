@@ -61,7 +61,7 @@ function sendOtpEmail($email, $otp) {
             <p style='margin-top: 20px;'>This OTP is valid for 10 minutes. If you did not request a password reset, please ignore this email.</p>
             <p>Thank you,<br>Data Saver Team</p>
             <hr style='border: none; border-top: 1px solid #eee; margin: 20px 0;'>
-            <p style='font-size: 12px; color: #999; text-align: center;'>If you have any questions, contact us at <a href='mailto:datasave@datasaver.online' style='color: #4CAF50;'>datasave@datasaver.online</a>.</p>
+            <p style='font-size: 12px; color: #999; text-align: center;'>If you have any questions, contact us at <a href='mailto:datasaver@datasaver.online' style='color: #4CAF50;'>datasaver@datasaver.online</a>.</p>
         </div>";
 
         $mail->send();

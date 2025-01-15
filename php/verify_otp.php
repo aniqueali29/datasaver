@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['verify'])) {
 
                     if ($stmt->execute()) {
                         try {
-                            $mail = getMailerInstance(); // Get the PHPMailer instance from smtp_config.php
+                            $mail = getMailerInstance(); 
 
                             $mail->addAddress($email, $name); 
                             $mail->isHTML(true);
@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['verify'])) {
                                         <div style='text-align: center; margin-top: 20px;'>
                                             <a href='https://datasaver.online' style='padding: 8px 16px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px; font-size: 14px;'>Visit Data Saver</a>
                                             </div>
-                                        <p style='font-size: 12px; color: #999; text-align: center; margin-top: 15px;'>Need help? Contact us at <a href='mailto:datasave@datasaver.online' style='color: #4CAF50;'>datasave@datasaver.online</a></p>
+                                        <p style='font-size: 12px; color: #999; text-align: center; margin-top: 15px;'>Need help? Contact us at <a href='mailto:datasaver@datasaver.online' style='color: #4CAF50;'>datasaver@datasaver.online</a></p>
                                             </div>
                                     </div>";
 

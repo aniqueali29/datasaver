@@ -80,13 +80,14 @@
 </html>
 
 <?php
-session_start(); 
+session_start();
 
 require '../vendor/autoload.php'; 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 include('../connection/db_config.php');
+include('../connection/smtp_config.php'); 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     $name = $_POST['name'];
@@ -94,8 +95,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
+    // Check if passwords match
     if ($password !== $confirm_password) {
-        echo "<script>showError('Passwords do not match!');</script>";
+        $_SESSION['error_message'] = 'Passwords do not match!';
+        header("Location: signup.php");
         exit;
     }
 
@@ -105,55 +108,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     $check_query->store_result();
 
     if ($check_query->num_rows > 0) {
-        echo "<script>showError('Email already exists!');</script>";
+        $_SESSION['error_message'] = 'Email already exists!';
+        header("Location: signup.php");
         exit;
     }
 
     $check_query->close();
 
-    // Hash the password
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    // Generate a random OTP
     $otp = rand(100000, 999999);
 
-    // Store the OTP in the session
-    $_SESSION['otp'] = $otp; // Store OTP in session
-    $_SESSION['email'] = $email; // Store email in session
-    $_SESSION['name'] = $name; // Store name in session
-    $_SESSION['password'] = $hashed_password; // Store hashed password in session
+    $_SESSION['otp'] = $otp;
+    $_SESSION['email'] = $email;
+    $_SESSION['name'] = $name;
+    $_SESSION['password'] = $hashed_password;
 
     // Send OTP email
     if (sendOtpEmail($email, $otp)) {
-        // Redirect to verify OTP page
         header("Location: verify_otp.php");
         exit;
     } else {
-        echo "<script>showError('Unable to send OTP.');</script>";
+        $_SESSION['error_message'] = 'Unable to send OTP. Please try again later.';
+        header("Location: signup.php");
     }
 }
 
 $conn->close();
 
 function sendOtpEmail($email, $otp) {
-    $mail = new PHPMailer(true);
-    
-    // Enable detailed debug output
-    $mail->SMTPDebug = 2;  // 0 = off (for production use), 2 = verbose debug output
-    $mail->Debugoutput = 'error_log';  // Output debug information to the error log
-    
     try {
-        $mail->isSMTP();
-        $mail->Host = ''; // SMTP server
-        $mail->SMTPAuth = true;
-        $mail->Username = ''; // SMTP username
-        $mail->Password = ''; // SMTP password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port = 465;
+        $mail = getMailerInstance();
 
-        $mail->setFrom('support@datasaver.online', 'Data Saver Account Verification');
+        // Send OTP email
+        $mail->setFrom('datasaver@datasaver.online', 'Data Saver Account Verification');
         $mail->addAddress($email);
-        
+
         $mail->isHTML(true);
         $mail->Subject = 'Your OTP Code for Data Saver Account Verification';
         $mail->Body = "
@@ -171,7 +161,7 @@ function sendOtpEmail($email, $otp) {
                     <div style='text-align: center; margin-top: 20px;'>
                         <a href='https://datasaver.online' style='padding: 8px 16px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px; font-size: 14px;'>Visit Data Saver</a>
                     </div>
-                    <p style='font-size: 12px; color: #999; text-align: center; margin-top: 15px;'>Need help? Contact us at <a href='mailto:support@datasaver.online' style='color: #4CAF50;'>support@datasaver.online</a></p>
+                    <p style='font-size: 12px; color: #999; text-align: center; margin-top: 15px;'>Need help? Contact us at <a href='mailto:datasaver@datasaver.online' style='color: #4CAF50;'>datasaver@datasaver.online</a></p>
                 </div>
             </div>";
 
@@ -180,32 +170,9 @@ function sendOtpEmail($email, $otp) {
         }
 
         return true;
-
     } catch (Exception $e) {
-        error_log('Primary SMTP Error: ' . $e->getMessage());
-
-        // Attempt to send via Gmail if the primary server fails
-        try {
-            $mail->clearAddresses();
-            $mail->clearAttachments();
-            
-            $mail->Host = 'smtp.gmail.com';
-            $mail->Username = ''; // Your Gmail account
-            $mail->Password = ''; // Gmail password or App Password
-            $mail->setFrom('support@datasaver.online', 'Data Saver Support');
-            $mail->addAddress($email);
-
-            if (!$mail->send()) {
-                throw new Exception('Gmail SMTP failed: ' . $mail->ErrorInfo);
-            }
-
-            return true;
-
-        } catch (Exception $e) {
-            error_log('Gmail SMTP Error: ' . $e->getMessage());
-            return false; 
-        }
+        error_log('SMTP Error: ' . $e->getMessage());
+        return false; 
     }
 }
-
 ?>
