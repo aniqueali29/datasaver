@@ -1,79 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="../css/signup.css">
-    <title>Set New Password</title>
-    <style>
-        .input-box {
-            position: relative;
-            margin-bottom: 1rem;
-        }
-        .toggle-password {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <div class="wrapper">
-        <h2 class="mb-4">Set New Password</h2>
-        <div class="alert alert-secondary" role="alert">
-            Please enter your new Password.
-        </div>
-        <form method="post" action="">
-            <div class="input-box">
-                <input type="password" name="new_password" id="new_password" class="form-control" placeholder="Enter new password" required>
-                <i class="bi bi-eye-slash toggle-password" id="toggleNewPassword"></i>
-            </div>
-            <div class="input-box">
-                <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm new password" required>
-                <i class="bi bi-eye-slash toggle-password" id="toggleConfirmPassword"></i>
-            </div>
-            <div class="input-box button">
-                <input type="submit" name="reset_password" value="Reset Password" class="btn btn-primary">
-            </div>
-        </form>
-    </div>
-
-    <script>
-        document.getElementById('toggleNewPassword').addEventListener('click', function () {
-            const passwordInput = document.getElementById('new_password');
-            const icon = this;
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                icon.classList.replace('bi-eye-slash', 'bi-eye');
-            } else {
-                passwordInput.type = 'password';
-                icon.classList.replace('bi-eye', 'bi-eye-slash');
-            }
-        });
-
-        document.getElementById('toggleConfirmPassword').addEventListener('click', function () {
-            const passwordInput = document.getElementById('confirm_password');
-            const icon = this;
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                icon.classList.replace('bi-eye-slash', 'bi-eye');
-            } else {
-                passwordInput.type = 'password';
-                icon.classList.replace('bi-eye', 'bi-eye-slash');
-            }
-        });
-    </script>
-
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-</body>
-</html>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <?php
 session_start();
 require '../vendor/autoload.php';
@@ -171,3 +96,78 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['reset_password'])) {
 
 $conn->close();
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="../css/signup.css">
+    <title>Set New Password</title>
+    <style>
+        .input-box {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <h2 class="mb-4">Set New Password</h2>
+        <div class="alert alert-secondary" role="alert">
+            Please enter your new Password.
+        </div>
+        <form method="post" action="">
+            <div class="input-box">
+                <input type="password" name="new_password" id="new_password" class="form-control" placeholder="Enter new password" required>
+                <i class="bi bi-eye-slash toggle-password" id="toggleNewPassword"></i>
+            </div>
+            <div class="input-box">
+                <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm new password" required>
+                <i class="bi bi-eye-slash toggle-password" id="toggleConfirmPassword"></i>
+            </div>
+            <div class="input-box button">
+                <input type="submit" name="reset_password" value="Reset Password" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('toggleNewPassword').addEventListener('click', function () {
+            const passwordInput = document.getElementById('new_password');
+            const icon = this;
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.replace('bi-eye-slash', 'bi-eye');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.replace('bi-eye', 'bi-eye-slash');
+            }
+        });
+
+        document.getElementById('toggleConfirmPassword').addEventListener('click', function () {
+            const passwordInput = document.getElementById('confirm_password');
+            const icon = this;
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.replace('bi-eye-slash', 'bi-eye');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.replace('bi-eye', 'bi-eye-slash');
+            }
+        });
+    </script>
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</body>
+</html>
