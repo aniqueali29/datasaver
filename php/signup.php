@@ -1,84 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="../css/signup.css">
-    <style>
-        #error-alert {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            width: 300px;
-            display: none; 
-        }
-    </style>
-</head>
-
-<body>
-<div class="wrapper">
-    <h2>Registration</h2>
-    <form method="post" action="">
-        <div class="input-box">
-            <input type="text" name="name" placeholder="Enter your name" required>
-        </div>
-        <div class="input-box">
-            <input type="email" name="email" placeholder="Enter your email" required>
-        </div>
-        <div class="input-box">
-            <input type="password" id="password" name="password" placeholder="Create password" required>
-        </div>
-        <div class="input-box">
-            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm password" required>
-        </div>
-        <div>
-            <input type="checkbox" class="show-passwords" id="show-passwords" onclick="togglePasswordVisibility()">
-                <label for="show-passwords">Show Passwords</label>
-        </div>
-        <div class="input-box button">
-            <input type="submit" name="register" value="Register Now">
-        </div>
-        <div class="text">
-            <h3>Already have an account? <a href="login.php">Login now</a></h3>
-        </div>
-    </form>
-</div>
-
-<!-- Bootstrap Alert -->
-<div id="error-alert" class="alert alert-warning alert-dismissible fade show" role="alert">
-  <strong>Error!</strong> <span id="alert-message">You should check in on some of those fields below.</span>
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-<script>
-    function togglePasswordVisibility() {
-        var password = document.getElementById("password");
-        var confirmPassword = document.getElementById("confirm_password");
-        if (password.type === "password" && confirmPassword.type === "password") {
-            password.type = "text";
-            confirmPassword.type = "text";
-        } else {
-            password.type = "password";
-            confirmPassword.type = "password";
-        }
-    }
-
-    function showError(message) {
-        document.getElementById("alert-message").innerText = message;
-        document.getElementById("error-alert").style.display = "block";
-    }
-</script>
-
-
-</body>
-</html>
-
 <?php
 session_start();
 
@@ -176,3 +95,84 @@ function sendOtpEmail($email, $otp) {
     }
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../css/signup.css">
+    <style>
+        #error-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            width: 300px;
+            display: none; 
+        }
+    </style>
+</head>
+
+<body>
+<div class="wrapper">
+    <h2>Registration</h2>
+    <form method="post" action="">
+        <div class="input-box">
+            <input type="text" name="name" placeholder="Enter your name" required>
+        </div>
+        <div class="input-box">
+            <input type="email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="input-box">
+            <input type="password" id="password" name="password" placeholder="Create password" required>
+        </div>
+        <div class="input-box">
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm password" required>
+        </div>
+        <div>
+            <input type="checkbox" class="show-passwords" id="show-passwords" onclick="togglePasswordVisibility()">
+                <label for="show-passwords">Show Passwords</label>
+        </div>
+        <div class="input-box button">
+            <input type="submit" name="register" value="Register Now">
+        </div>
+        <div class="text">
+            <h3>Already have an account? <a href="login.php">Login now</a></h3>
+        </div>
+    </form>
+</div>
+
+<!-- Bootstrap Alert -->
+<div id="error-alert" class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Error!</strong> <span id="alert-message">You should check in on some of those fields below.</span>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<script>
+    function togglePasswordVisibility() {
+        var password = document.getElementById("password");
+        var confirmPassword = document.getElementById("confirm_password");
+        if (password.type === "password" && confirmPassword.type === "password") {
+            password.type = "text";
+            confirmPassword.type = "text";
+        } else {
+            password.type = "password";
+            confirmPassword.type = "password";
+        }
+    }
+
+    function showError(message) {
+        document.getElementById("alert-message").innerText = message;
+        document.getElementById("error-alert").style.display = "block";
+    }
+</script>
+
+
+</body>
+</html>
