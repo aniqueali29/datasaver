@@ -76,11 +76,12 @@
 
 <?php
 session_start();
-require '../vendor/autoload.php'; 
+require '../vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 include('../connection/db_config.php');
+include('../connection/smtp_config.php');
 
 if (!isset($_SESSION['reset_email']) || !isset($_SESSION['otp_verified']) || $_SESSION['otp_verified'] !== true) {
     header("Location: verify_reset_otp.php");
@@ -101,27 +102,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['reset_password'])) {
             });
         </script>";
     } else {
-        // Hash the new password
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
         $email = $_SESSION['reset_email'];
 
-        // Update password 
         $update_query = $conn->prepare("UPDATE users SET password = ? WHERE email = ?");
         $update_query->bind_param("ss", $hashed_password, $email);
 
         if ($update_query->execute()) {
             try {
-                $mail = new PHPMailer(true);
-                $mail->isSMTP();
-        $mail->Host = 'mail.datasaver.online'; // SMTP server
-        $mail->SMTPAuth = true;
-        $mail->Username = ''; // SMTP username
-        $mail->Password = ''; // SMTP password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port = 465;
-
-                // Set the email content
-                $mail->setFrom('datasave@datasaver.online', 'DataSaver Support');
+                $mail = getMailerInstance();
                 $mail->addAddress($email); 
                 $mail->isHTML(true);
                 $mail->Subject = 'Password Changed Successfully';

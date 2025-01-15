@@ -3,19 +3,15 @@
 session_start();
 include('../connection/db_config.php');
 
-// Increase the PHP execution time limit
 set_time_limit(300); // 5 minutes
 
-// Set the maximum memory limit to handle large file uploads
 ini_set('memory_limit', '256M');
 
 date_default_timezone_set('Asia/Karachi');
 $name = "Join Us";
 
-// Define expiration time limit (15 minutes in seconds)
 define('EXPIRATION_LIMIT', 15 * 60);
 
-// Handle expiration logic
 $query = "
     UPDATE `shared_files` 
     SET `expired` = 1 
@@ -41,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
     $created_at = date("Y-m-d H:i:s");
     $delete_at = date("Y-m-d H:i:s", strtotime("+30 minutes"));
 
-    // Check file size (max 200MB)
     define('MAX_FILE_SIZE', 200 * 1024 * 1024);
     if ($filesize > MAX_FILE_SIZE) {
         $response['message'] = "File size exceeds the 200MB limit.";
@@ -70,25 +65,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file'])) {
     exit;
 }
 
-// Pagination logic
 $limit = 10;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $start = ($page > 1) ? ($page * $limit) - $limit : 0;
 
-// Get user IP address
 $user_ip = $_SERVER['REMOTE_ADDR'];
 
-// Fetch total number of rows for active files (including expired) within the same network
 $ip_prefix = substr($user_ip, 0, strrpos($user_ip, '.'));
 $totalQuery = "SELECT COUNT(*) as total FROM `shared_files` WHERE user_ip LIKE '$ip_prefix.%'";
 $totalResult = mysqli_query($conn, $totalQuery);
 $totalRow = mysqli_fetch_assoc($totalResult);
 $total = $totalRow['total'];
 
-// Calculate total pages
 $pages = ceil($total / $limit);
 
-// Fetch data for the current page (including expired files) within the same network
 $query = "SELECT * FROM `shared_files` WHERE user_ip LIKE '$ip_prefix.%' ORDER BY id DESC LIMIT $start, $limit";
 
 $result = mysqli_query($conn, $query);
@@ -98,7 +88,7 @@ if (!$result) {
 }
 
 if (mysqli_num_rows($result) == 0) {
-    // echo "No rows found for query.";
+    // echo "no query.";
 }
 
 ?>
@@ -272,12 +262,10 @@ if (mysqli_num_rows($result) == 0) {
                         <td>
                             <?php 
     if ($row['expired'] == 0): 
-        // Generate a secure token for the file
         $token = bin2hex(random_bytes(16));
-        $secureFileName = $row['filename'] . $original_filename; // Concatenate the filename
-        $_SESSION['file_tokens'][$token] = $secureFileName; // Save token in session
+        $secureFileName = $row['filename'] . $original_filename;
+        $_SESSION['file_tokens'][$token] = $secureFileName;
         
-        // Create the secure download link
         $downloadLink = "secure_download.php?file=" . urlencode($secureFileName) . "&token=" . $token;
     ?>
                             <a href="<?php echo $downloadLink; ?>" class="btn actions btn-success btn-sm">Download</a>

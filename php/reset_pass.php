@@ -4,6 +4,7 @@ require '../vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 include('../connection/db_config.php');
+include('../connection/smtp_config.php'); 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['reset'])) {
     $email = $_POST['email'];
@@ -42,19 +43,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['reset'])) {
 $conn->close();
 
 function sendOtpEmail($email, $otp) {
-    $mail = new PHPMailer(true);
-    
-    try {
-        $mail->isSMTP();
-        $mail->Host = ''; // SMTP server
-        $mail->SMTPAuth = true;
-        $mail->Username = ''; // SMTP username
-        $mail->Password = ''; // SMTP password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port = 465;
+    $mail = getMailerInstance();
 
-        $mail->setFrom('', 'Data Saver Support');//Email
-        $mail->addAddress($email);
+    try {
+        $mail->addAddress($email); 
         $mail->isHTML(true);
         $mail->Subject = 'Reset Your Password - OTP Code';
 
@@ -71,24 +63,13 @@ function sendOtpEmail($email, $otp) {
             <hr style='border: none; border-top: 1px solid #eee; margin: 20px 0;'>
             <p style='font-size: 12px; color: #999; text-align: center;'>If you have any questions, contact us at <a href='mailto:datasave@datasaver.online' style='color: #4CAF50;'>datasave@datasaver.online</a>.</p>
         </div>";
-        
+
         $mail->send();
         return true;
     } catch (Exception $e) {
-        try {
-            $mail->clearAddresses();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->Username = '';
-            $mail->Password = '';
-            $mail->setFrom('datasave@datasaver.online', 'Data Saver Support');
-            $mail->send();
-            return true;
-        } catch (Exception $e) {
-            return false;
-        }
+        return false;
     }
 }
-
 ?>
 
 <!DOCTYPE html>

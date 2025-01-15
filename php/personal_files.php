@@ -2,7 +2,7 @@
 include('../connection/db_config.php');
 include('../layout/header.php');
 
-$limit = 16; // Number of rows per page
+$limit = 16; 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
 $start = ($page > 1) ? ($page * $limit) - $limit : 0;
 
@@ -127,67 +127,70 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: #007bff;
         }
 
-.context-menu {
-    position: fixed; /* Change from absolute to fixed */
-    z-index: 999;
-    display: none;
-    background: #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-    overflow: hidden;
-    min-width: 150px;
-}
+        .context-menu {
+            position: fixed;
+            z-index: 999;
+            display: none;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            min-width: 150px;
+        }
 
-.context-menu li {
-    list-style: none;
-    padding: 10px 20px;
-    color: #333;
-    cursor: pointer;
-    transition: background 0.3s;
-}
+        .context-menu li {
+            list-style: none;
+            padding: 10px 20px;
+            color: #333;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
 
-.context-menu li:hover {
-    background: #f0f0f0;
-}
-
+        .context-menu li:hover {
+            background: #f0f0f0;
+        }
     </style>
 </head>
 
 <body>
     <div class="file-manager">
-        <button class="btn btn-primary btn-upload" data-bs-toggle="modal" data-bs-target="#addFileModal">Upload File</button>
+        <button class="btn btn-primary btn-upload" data-bs-toggle="modal" data-bs-target="#addFileModal">Upload
+            File</button>
         <div class="file-grid">
             <?php while ($row = mysqli_fetch_assoc($result)) : ?>
-                <div class="file-item" 
-                     data-id="<?php echo $row['id']; ?>" 
-                     data-name="<?php echo htmlspecialchars($row['filename']); ?>" 
-                     data-size="<?php echo $row['filesize']; ?>" 
-                     data-text_data="<?php echo htmlspecialchars($row['text_data']); ?>">
-                    <img src="<?php echo getFileIcon($row['filename']); ?>" alt="File Icon">
-                    <h3><?php echo htmlspecialchars($row['filename']); ?></h3>
-                </div>
-                
+            <div class="file-item" data-id="<?php echo $row['id']; ?>"
+                data-name="<?php echo htmlspecialchars($row['filename']); ?>"
+                data-size="<?php echo $row['filesize']; ?>"
+                data-text_data="<?php echo htmlspecialchars($row['text_data']); ?>">
+                <img src="<?php echo getFileIcon($row['filename']); ?>" alt="File Icon">
+                <h3>
+                    <?php echo htmlspecialchars($row['filename']); ?>
+                </h3>
+            </div>
+
 
             <?php endwhile; ?>
         </div>
         <nav aria-label="Page navigation">
             <ul class="pagination">
                 <?php for ($i = 1; $i <= $pages; $i++) : ?>
-                    <li class="page-item <?php echo ($i == $page) ? 'active' : ''; ?>">
-                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                    </li>
+                <li class="page-item <?php echo ($i == $page) ? 'active' : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $i; ?>">
+                        <?php echo $i; ?>
+                    </a>
+                </li>
                 <?php endfor; ?>
             </ul>
         </nav>
     </div>
-                    <!-- Context Menu -->
+    <!-- Context Menu -->
     <ul class="context-menu" id="fileContextMenu">
         <li data-action="download">Download</li>
-        <li class="share" data-action="download"data-file-id="<?php echo $row['id']; ?>">Share</li>
+        <li class="share" data-action="download" data-file-id="<?php echo $row['id']; ?>">Share</li>
         <li data-action="delete">Delete</li>
         <li data-action="text_data">text_data</li>
     </ul>
-    
+
     <!-- Message Modal -->
     <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -232,195 +235,196 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!--        </div>-->
     <!--    </div>-->
     <!--</div>-->
-    
+
     <!-- Modal -->
-<form method="post" enctype="multipart/form-data" id="uploadForm">
-    <div class="modal fade" id="addFileModal" tabindex="-1" aria-labelledby="addFileModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">Add Data</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group mb-3">
-                        <label for="file">Select File</label>
-                        <input type="file" name="file" class="form-control" id="file" required>
+    <form method="post" enctype="multipart/form-data" id="uploadForm">
+        <div class="modal fade" id="addFileModal" tabindex="-1" aria-labelledby="addFileModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Add Data</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="form-group mb-3">
-                        <label for="text">Text Data</label>
-                        <input type="text" name="text" class="form-control" id="text">
+                    <div class="modal-body">
+                        <div class="form-group mb-3">
+                            <label for="file">Select File</label>
+                            <input type="file" name="file" class="form-control" id="file" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="text">Text Data</label>
+                            <input type="text" name="text" class="form-control" id="text">
+                        </div>
+                        <!-- Progress Bar -->
+                        <div class="progress" id="progressBarContainer" style="display: none;">
+                            <div class="progress-bar" role="progressbar" style="width: 0%;" id="progressBar"
+                                data-content="0%"></div>
+                        </div>
                     </div>
-                    <!-- Progress Bar -->
-                    <div class="progress" id="progressBarContainer" style="display: none;">
-                        <div class="progress-bar" role="progressbar" style="width: 0%;" id="progressBar" data-content="0%"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Upload</button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Upload</button>
                 </div>
             </div>
         </div>
-    </div>
-</form>
-
-
-<script>
-$(document).ready(function () {
-    const $contextMenu = $('#fileContextMenu');
-
-    // Handle right-click (context menu) on file items
-    $('.file-item').on('contextmenu', function (e) {
-        e.preventDefault();
-
-        const fileId = $(this).data('id');
-        const fileName = $(this).data('name');
-        const fileSize = $(this).data('size');
-        const textData = $(this).data('text_data');
-
-        $contextMenu.data('file', { id: fileId, name: fileName, size: fileSize, text_data: textData });
-
-        $contextMenu.find('[data-action="text_data"]').toggle(!!textData);
-
-        // Calculate menu position
-        const menuWidth = $contextMenu.outerWidth();
-        const menuHeight = $contextMenu.outerHeight();
-        const windowWidth = $(window).width();
-        const windowHeight = $(window).height();
-
-        let top = e.pageY;
-        let left = e.pageX;
-
-        if (e.pageX + menuWidth > windowWidth) {
-            left = windowWidth - menuWidth - 10;
-        }
-        if (e.pageY + menuHeight > windowHeight) {
-            top = windowHeight - menuHeight - 10;
-        }
-
-        $contextMenu.css({
-            top: `${top}px`,
-            left: `${left}px`,
-            display: 'block',
-        });
-    });
-
-    $(document).on('click', function () {
-        $contextMenu.hide();
-    });
-
-    $contextMenu.on('click', 'li', function () {
-        const action = $(this).data('action');
-        const file = $contextMenu.data('file');
-
-        if (action === 'delete') {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'This will permanently delete the file.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'Cancel',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.post('./delete_file.php', { file_id: file.id }, function (response) {
-                        const res = JSON.parse(response);
-                        if (res.success) {
-                            Swal.fire('Deleted!', 'Your file has been deleted.', 'success').then(() => {
-                                location.reload();
-                            });
-                        } else {
-                            Swal.fire('Error!', res.message, 'error');
-                        }
-                    }).fail(function () {
-                        Swal.fire('Error!', 'Unable to delete the file.', 'error');
-                    });
-                }
-            });
-        } else if (action === 'text_data') {
-            $('#modalMessage').text(file.text_data);
-            $('#messageModal').modal('show');
-        } else if (action === 'download') {
-            // Trigger download
-            const link = document.createElement('a');
-            link.href = `../uploads/personal_files/${file.name}`;
-            link.download = file.name;
-            link.click();
-        } else if (action === 'share') {
-            const shareUrl = `${window.location.origin}./share.php?file_id=${file.id}`;
-            navigator.clipboard.writeText(shareUrl).then(() => {
-                Swal.fire('Shared!', 'File link copied to clipboard.', 'success');
-            }).catch(() => {
-                Swal.fire('Error!', 'Failed to copy file link.', 'error');
-            });
-        } else {
-            alert('Unknown action selected.');
-        }
-    });
-});
-</script>
+    </form>
 
 
     <script>
-    $(document).ready(function () {
-    $('#uploadForm').on('submit', function (e) {
-        e.preventDefault();
+        $(document).ready(function () {
+            const $contextMenu = $('#fileContextMenu');
 
-        let formData = new FormData(this);
+            // Handle right-click (context menu) on file items
+            $('.file-item').on('contextmenu', function (e) {
+                e.preventDefault();
 
-        $.ajax({
-            url: '../upload.php',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            beforeSend: function () {
-                $('#progressBarContainer').show();
-                $('#progressBar').css('width', '0%').text('0%');
-            },
-            xhr: function () {
-                let xhr = new window.XMLHttpRequest();
-                xhr.upload.addEventListener("progress", function (evt) {
-                    if (evt.lengthComputable) {
-                        let percentComplete = (evt.loaded / evt.total) * 100;
-                        $('#progressBar').css('width', percentComplete + '%').text(Math.round(percentComplete) + '%');
-                    }
-                }, false);
-                return xhr;
-            },
-            success: function (response) {
-                let res = JSON.parse(response);
-                if (res.success) {
+                const fileId = $(this).data('id');
+                const fileName = $(this).data('name');
+                const fileSize = $(this).data('size');
+                const textData = $(this).data('text_data');
+
+                $contextMenu.data('file', { id: fileId, name: fileName, size: fileSize, text_data: textData });
+
+                $contextMenu.find('[data-action="text_data"]').toggle(!!textData);
+
+                // Calculate menu position
+                const menuWidth = $contextMenu.outerWidth();
+                const menuHeight = $contextMenu.outerHeight();
+                const windowWidth = $(window).width();
+                const windowHeight = $(window).height();
+
+                let top = e.pageY;
+                let left = e.pageX;
+
+                if (e.pageX + menuWidth > windowWidth) {
+                    left = windowWidth - menuWidth - 10;
+                }
+                if (e.pageY + menuHeight > windowHeight) {
+                    top = windowHeight - menuHeight - 10;
+                }
+
+                $contextMenu.css({
+                    top: `${top}px`,
+                    left: `${left}px`,
+                    display: 'block',
+                });
+            });
+
+            $(document).on('click', function () {
+                $contextMenu.hide();
+            });
+
+            $contextMenu.on('click', 'li', function () {
+                const action = $(this).data('action');
+                const file = $contextMenu.data('file');
+
+                if (action === 'delete') {
                     Swal.fire({
-                        title: 'Success',
-                        text: 'File uploaded successfully!',
-                        icon: 'success'
-                    }).then(() => {
-                        location.reload(); 
+                        title: 'Are you sure?',
+                        text: 'This will permanently delete the file.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'Cancel',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.post('./delete_file.php', { file_id: file.id }, function (response) {
+                                const res = JSON.parse(response);
+                                if (res.success) {
+                                    Swal.fire('Deleted!', 'Your file has been deleted.', 'success').then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire('Error!', res.message, 'error');
+                                }
+                            }).fail(function () {
+                                Swal.fire('Error!', 'Unable to delete the file.', 'error');
+                            });
+                        }
+                    });
+                } else if (action === 'text_data') {
+                    $('#modalMessage').text(file.text_data);
+                    $('#messageModal').modal('show');
+                } else if (action === 'download') {
+                    // Trigger download
+                    const link = document.createElement('a');
+                    link.href = `../uploads/personal_files/${file.name}`;
+                    link.download = file.name;
+                    link.click();
+                } else if (action === 'share') {
+                    const shareUrl = `${window.location.origin}./share.php?file_id=${file.id}`;
+                    navigator.clipboard.writeText(shareUrl).then(() => {
+                        Swal.fire('Shared!', 'File link copied to clipboard.', 'success');
+                    }).catch(() => {
+                        Swal.fire('Error!', 'Failed to copy file link.', 'error');
                     });
                 } else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: res.message,
-                        icon: 'error'
-                    });
+                    alert('Unknown action selected.');
                 }
-            },
-            error: function () {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Something went wrong during the upload process.',
-                    icon: 'error'
-                });
-            },
-            complete: function () {
-                $('#progressBarContainer').hide();
-                $('#progressBar').css('width', '0%').text('0%');
-            }
+            });
         });
-    });
-});
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#uploadForm').on('submit', function (e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+
+                $.ajax({
+                    url: '../upload.php',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function () {
+                        $('#progressBarContainer').show();
+                        $('#progressBar').css('width', '0%').text('0%');
+                    },
+                    xhr: function () {
+                        let xhr = new window.XMLHttpRequest();
+                        xhr.upload.addEventListener("progress", function (evt) {
+                            if (evt.lengthComputable) {
+                                let percentComplete = (evt.loaded / evt.total) * 100;
+                                $('#progressBar').css('width', percentComplete + '%').text(Math.round(percentComplete) + '%');
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    success: function (response) {
+                        let res = JSON.parse(response);
+                        if (res.success) {
+                            Swal.fire({
+                                title: 'Success',
+                                text: 'File uploaded successfully!',
+                                icon: 'success'
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: res.message,
+                                icon: 'error'
+                            });
+                        }
+                    },
+                    error: function () {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Something went wrong during the upload process.',
+                            icon: 'error'
+                        });
+                    },
+                    complete: function () {
+                        $('#progressBarContainer').hide();
+                        $('#progressBar').css('width', '0%').text('0%');
+                    }
+                });
+            });
+        });
 
     </script>
 </body>

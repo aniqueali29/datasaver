@@ -3,8 +3,8 @@ include('../connection/db_config.php');
 include('../layout/header.php');
 
 $limit = 10; 
-$page = isset($_GET['page']) ? (int) $_GET['page'] : 1; // Get current page number from URL, default is 1
-$start = ($page > 1) ? ($page * $limit) - $limit : 0; // Calculate starting row
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1; 
+$start = ($page > 1) ? ($page * $limit) - $limit : 0; 
 
 $totalQuery = "SELECT COUNT(*) as total FROM `users_data` WHERE email='$email'";
 $totalResult = mysqli_query($conn, $totalQuery);

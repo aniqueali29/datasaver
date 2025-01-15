@@ -1,19 +1,16 @@
 <?php
 session_start();
 if (!isset($_SESSION['reset_email']) || !isset($_SESSION['reset_otp'])) {
-    // Redirect to the start of the process if no OTP request was made
     header("Location: reset_pass.php");
     exit;
 }
 
 $user_email = $_SESSION['reset_email'];
 
-// OTP verification logic
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['verify'])) {
     $entered_otp = $_POST['otp'];
 
     if ($entered_otp == $_SESSION['reset_otp']) {
-        // OTP is correct; allow access to the new password page
         $_SESSION['otp_verified'] = true;
         header("Location: new_password.php");
         exit;

@@ -1,9 +1,8 @@
 <?php
-ob_start(); // Start output buffering
-include '../db_config.php';  // Your database connection file
-include '../header.php';
+ob_start(); 
+include '../connection/db_config.php'; 
+include '../layout/header.php';
 
-// Set the default timezone
 date_default_timezone_set('Asia/Karachi'); 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -12,11 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message = $_POST['message'];
 
         if (!empty($message)) {
-            // Set `delete_at` to 30 minutes from now and `created_at` to the current time
             $delete_at = date("Y-m-d H:i:s", strtotime("+30 minutes"));
             $created_at = date("Y-m-d H:i:s");
 
-            // Prepare statements for inserting messages
             $stmt1 = $conn->prepare("INSERT INTO messages (user_id, message, delete_at, created_at) VALUES (?, ?, ?, ?)");
             $stmt1->bind_param("isss", $user_id, $message, $delete_at, $created_at);
 
@@ -24,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt2->bind_param("isss", $user_id, $message, $delete_at, $created_at);
 
             if ($stmt1->execute() && $stmt2->execute()) {
-                // Redirect to avoid form resubmission
                 header("Location: " . $_SERVER['PHP_SELF']);
                 exit;
             } else {
@@ -41,15 +37,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Pagination setup
 $limit = 10;
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
-// Delete expired messages
 $conn->query("DELETE FROM messages WHERE delete_at < NOW()");
 
-// Fetch paginated messages
 $query = "SELECT messages.id, users.name, messages.message, messages.created_at, messages.delete_at
           FROM messages
           JOIN users ON messages.user_id = users.id
@@ -57,25 +50,13 @@ $query = "SELECT messages.id, users.name, messages.message, messages.created_at,
           LIMIT $limit OFFSET $offset";
 $result = $conn->query($query);
 
-// Get total number of messages
 $total_query = "SELECT COUNT(*) as total FROM messages";
 $total_result = $conn->query($total_query);
 $total_messages = $total_result->fetch_assoc()['total'];
 $total_pages = ceil($total_messages / $limit);
 
-ob_end_flush(); // Flush the output buffer and send output
+ob_end_flush();
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- head content here -->
-</head>
-<body>
-    <!-- body content here -->
-</body>
-</html>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -163,7 +144,6 @@ ob_end_flush(); // Flush the output buffer and send output
             justify-content: center;
         }
 
-        /* Scroll-Up Button Styles */
         #scrollUpBtn {
             display: none;
             position: fixed;
@@ -310,7 +290,6 @@ ob_end_flush(); // Flush the output buffer and send output
     <div class="container mt-5">
         <h1 class="h1">Community Post</h1>
 
-        <!-- Trigger Button -->
         <button type="button" class="trigger-btn" data-bs-toggle="modal" data-bs-target="#messageModal">
             Post a Message
         </button><br><br>

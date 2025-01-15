@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('../db_config.php');
+include('../connection/db_config.php');
 
 date_default_timezone_set('Asia/Karachi');
 

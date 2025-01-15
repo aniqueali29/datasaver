@@ -1,67 +1,48 @@
 <?php
-session_start(); 
+session_start();
 
-require '../vendor/autoload.php'; // Include the Composer autoloader
+require '../vendor/autoload.php'; 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 include('../connection/db_config.php');
+include('../connection/smtp_config.php');
 
-// Initialize user_email from session
 $user_email = isset($_SESSION['email']) ? $_SESSION['email'] : null;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['verify'])) {
     $entered_otp = $_POST['otp'];
 
-    // Check if the OTP and email are set in the session
     if (isset($_SESSION['otp']) && isset($_SESSION['email'])) {
         $otp = $_SESSION['otp'];
         $email = $_SESSION['email'];
 
-        // Debug: Output stored OTP and entered OTP
-        error_log("Stored OTP: $otp"); // Log the stored OTP
+        error_log("Stored OTP: $otp"); 
         error_log("Entered OTP: $entered_otp"); 
 
-        // Validate the entered OTP
         if ($entered_otp == $otp) {
-            // Retrieve user information from the session
             $name = $_SESSION['name'] ?? null;
             $password = $_SESSION['password'] ?? null;
 
-            // Check if name and password are set
             if ($name !== null && $password !== null) {
-                // Check if the email already exists in the database
                 $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
                 $stmt->bind_param("s", $email);
                 $stmt->execute();
                 $stmt->store_result();
 
                 if ($stmt->num_rows > 0) {
-                    // Email already exists, set error message
                     $_SESSION['error_message'] = 'This email address is already registered. Please use a different email or login.';
                 } else {
-                    // Hash the password before storing it in the database for security
                     $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-                    // Insert the user into the database
                     $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
                     $stmt->bind_param("sss", $name, $email, $hashed_password);
 
                     if ($stmt->execute()) {
-                        // Send a welcome email
                         try {
-                            $mail = new PHPMailer(true);
+                            $mail = getMailerInstance(); // Get the PHPMailer instance from smtp_config.php
 
-        $mail->isSMTP();
-        $mail->Host = ''; // SMTP server
-        $mail->SMTPAuth = true;
-        $mail->Username = ''; // SMTP username
-        $mail->Password = ''; // SMTP password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port = 465;
-
-                            $mail->setFrom('datasave@datasaver.online', 'DataSaver Support');
-                            $mail->addAddress($email, $name);
+                            $mail->addAddress($email, $name); 
                             $mail->isHTML(true);
                             $mail->Subject = 'Welcome to Our Platform';
                             $mail->Body = "
@@ -78,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['verify'])) {
                                         <p style='font-size: 12px; color: #999; text-align: center; margin-top: 15px;'>Need help? Contact us at <a href='mailto:datasave@datasaver.online' style='color: #4CAF50;'>datasave@datasaver.online</a></p>
                                             </div>
                                     </div>";
-                            
+
                             $mail->send();
                             $_SESSION['success_message'] = 'Registration successful! A welcome email has been sent to your email address.';
                         } catch (Exception $e) {
@@ -129,7 +110,6 @@ $conn->close();
             unset($_SESSION['error_message']);
         }
 
-        // Display success message if set
         if (isset($_SESSION['success_message'])) {
             echo "<script>
                 Swal.fire({
