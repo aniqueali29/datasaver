@@ -14,7 +14,6 @@ function getUserIP()
     }
 }
 
-// Retrieve the ip
 $ip_address = getUserIP();
 if (empty($ip_address)) {
     die("Error: IP address is not set.");
@@ -159,9 +158,8 @@ $stmt_total->close();
 
 $total_pages = ceil($total_messages / $limit);
 
-ob_end_flush(); 
+ob_end_flush();
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -170,376 +168,37 @@ ob_end_flush();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IP-Based Messaging</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="./css/index.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        
-
-<style>
-.container {
-    max-width: 90%;
-    margin: auto;
-    padding: 15px;
-}
-
-.message-card {
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    margin-bottom: 30px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.message-card:hover {
-    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
-}
-
-.message-header {
-    background: #5985b9;
-    color: #ffffff;
-    padding: 15px 20px;
-    font-weight: bold;
-    font-size: 1.2em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 4px solid #82B959;
-}
-.header-title {
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.btn-copy {
-    background: #42a5f5;
-    color: #ffffff;
-    border: none;
-    padding: 8px 15px;
-    font-size: 0.9em;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.btn-copy:hover {
-    background: #2196f3;
-    box-shadow: 0px 5px 10px rgba(66, 165, 245, 0.4);
-}
-
-.message-content {
-    padding: 25px;
-    font-size: 1.1em;
-    color: #333;
-    line-height: 1.8;
-    background: #ffffff;
-    border-radius: 0 0 15px 15px;
-}
-
-.message-footer {
-    background: linear-gradient(90deg, #f3f6f9, #e3eaf2);
-    padding: 15px 20px;
-    font-size: 0.9em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 2px solid #bbdefb;
-}
-
-.message-footer em {
-    font-style: italic;
-    color: #555;
-}
-
-.message-footer form .btn {
-    padding: 8px 15px;
-    border-radius: 20px;
-    background: #e53935;
-    color: #ffffff;
-    border: none;
-    font-size: 0.9em;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.message-footer form .btn:hover {
-    background: #c62828;
-    transform: scale(1.1);
-}
-
-.btn-danger {
-    background-color: #dc3545;
-    border: none;
-    padding: 5px 10px;
-    font-size: 14px;
-    color: #fff;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.btn-danger:hover {
-    background-color: #c82333;
-}
-
-    .post-btn {
-        background-color: #629f33;
-        font:30px;
-        width:300px;
-        border: none;
-        color: white;
-        margin: 0;
-        border-radius: 30px;
-        /*padding: 12px 24px;*/
-        box-shadow: 0px 4px 6px rgba(0, 123, 255, 0.2);
-        transition: all 0.3s ease;
-    }
-
-    .post-btn:hover {
-
-        background-color: #82b859;
-        color: white;
-        box-shadow: 0px 6px 8px rgba(0, 86, 179, 0.3);
-    }
-    
-        .custom-button {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
-        display: block;
-        margin: auto;
-    }
-
-    .custom-button:hover {
-        background-color: #0056b3;
-        color: white;
-        box-shadow: 0px 6px 12px rgba(0, 86, 179, 0.3);
-        transform: translateY(-3px);
-    }
-
-.modal-header {
-    background: #5985B9;
-    color: white;
-    padding: 20px;
-    border-bottom: 4px solid #82B959;
-    font-size: 1.5rem;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.modal-header::before {
-    content: '';
-    position: absolute;
-    top: -50px;
-    left: -50px;
-    width: 200px;
-    height: 200px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    animation: headerPulse 6s infinite;
-}
-
-
-.modal-header h5 {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.modal-header .btn-close {
-    filter: brightness(0) invert(1);
-    opacity: 0.7;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.modal-header .btn-close:hover {
-    transform: rotate(90deg);
-    opacity: 1;
-}
-
-.modal-footer {
-    background: #ffff;
-    color: #555555;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.modal-footer .btn {
-    font-size: 16px;
-    font-weight: bold;
-    padding: 10px 20px;
-    border-radius: 25px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.modal-footer .btn-model {
-    background-color: #007bff;
-    color:white;
-    border: none;
-}
-
-.modal-footer .btn-model:hover {
-    background-color: #0056b3;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-
-.modal-footer .btn-danger {
-    background-color: #ff4c4c;
-    border: none;
-}
-
-.modal-footer .btn-danger:hover {
-    background-color: #d32f2f;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-
-    .message-content {
-        padding: 25px;
-        font-size: 1.1em;
-        color: #333;
-        line-height: 1.8;
-        background: #ffffff;
-        border-radius: 0 0 15px 15px;
-        max-height: none;
-        overflow: visible;
-    }
-
-    .message-content.wrapped {
-        max-height: 200px;
-        overflow-y: auto;
-    }
-
- .btn-wrap {
-        background: #42a5f5;
-        color: #ffffff;
-        border: none;
-        padding: 8px 15px;
-        font-size: 0.9em;
-        border-radius: 25px;
-        cursor: pointer;
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        position: absolute;
-        left: 50%;
-        
-        transform: translateX(-50%);
-    }
-
-
-    .btn-wrap:hover {
-        background: #2196f3;
-        box-shadow: 0px 5px 10px rgba(66, 165, 245, 0.4);
-    }
-    
-    .message-header {
-        background: #5985b9;
-        color: #ffffff;
-        padding: 15px 20px;
-        font-weight: bold;
-        font-size: 1.2em;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 4px solid #82B959;
-    }
-
-.toggle-wrap {
-    position: absolute;
-    left: 88%;
-    margin-top: 4px;
-    display: inline-block;
-    width: 50px;
-    height: 26px;
-}
-
-.toggle-wrap input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: 0.4s;
-    border-radius: 26px;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 20px;
-    width: 20px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: 0.4s;
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-input:checked + .slider {
-    background-color: #4caf50;
-}
-
-input:checked + .slider:before {
-    transform: translateX(24px);
-}
-
-.message-content {
-    padding: 25px;
-    font-size: 1.1em;
-    color: #333;
-    line-height: 1.8;
-    background: #ffffff;
-    border-radius: 0 0 15px 15px;
-    max-height: none;
-    overflow: visible;
-    transition: max-height 0.3s ease, overflow 0.3s ease;
-}
-
-.message-content.wrapped {
-    max-height: 200px;
-    overflow-y: auto;
-}
-
-</style>
+    <link href="./css/index.css" rel="stylesheet">
+    <link href="./css/nav.css" rel="stylesheet">
 </head>
 
 <body>
 
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-blue">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                <h1>Dashboard</h1>
+                <h1>
+                    <figure class="logo d-flex align-items-center gap-3"><img src="./assets/img/logo.png" alt="">
+                    </figure>
+                </h1>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" style="filter: invert(1);" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <!-- <button class="navbar-toggler" id="navToggleBtn" style="filter: invert(1);" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon" id="toggleIcon"></span>
+            </button> -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0 ">
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="./index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" aria-current="page" href="./index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="./php/view_messages.php">Community Post</a></li>
                     <li class="nav-item"><a class="nav-link" href="./php/ip_file.php">IP Share</a></li>
                     <li class="nav-item"><a class="nav-link" href="./php/dashboard.php">Personal Files</a></li>
@@ -548,7 +207,7 @@ input:checked + .slider:before {
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://via.placeholder.com/30" alt="User Avatar" class="rounded-circle me-1">
+                            <!-- <img src="https://via.placeholder.com/30" alt="User Avatar" class="rounded-circle me-1"> -->
                             <!-- Username -->
                             <?php echo htmlspecialchars($name); ?>
                         </a>
@@ -569,160 +228,200 @@ input:checked + .slider:before {
         </div>
     </nav>
 
-<div class="container mt-5 mb-5">
-    <?php if ($message_count < 10 || isset($_SESSION['user_id'])): ?>
+
+    <div class="container mb-3">
+        <?php if ($message_count < 10 || isset($_SESSION['user_id'])): ?>
         <!-- Trigger Button -->
-        <button type="button" class="post-btn sticky-post-btn d-grid gap-2 col-6 mx-auto mt-5"
-            data-bs-toggle="modal" data-bs-target="#messageModal">
+        <button type="button" class="post-btn gap-2 col-6 mt-5" data-bs-toggle="modal" data-bs-target="#messageModal">
             Post a Message
         </button><br><br>
         <?php if ($result->num_rows > 0): ?>
-            <div class="row">
-                <?php while ($row = $result->fetch_assoc()): ?>
-    <div class="col-md-12">
-        <div class="message-card" id="message-card-<?php echo $row['id']; ?>">
-            <div class="message-header">
-                <div class="header-title">
-                    <?php echo htmlspecialchars($row['ip_address']); ?>
-                    <button class="btn-copy" onclick="copyText('<?php echo $row['id']; ?>')">Copy</button>
-                </div>
-                <!-- Toggle Button -->
-<label class="toggle-wrap">
-    <input type="checkbox" checked onclick="toggleWrap('<?php echo $row['id']; ?>')">
-    <span class="slider"></span>
-</label>
-            </div>
-            <!--<div class="message-content" id="message-<?php echo $row['id']; ?>">-->
-            <div id="message-<?php echo $row['id']; ?>" class="message-content wrapped">
-                <?php echo nl2br(htmlspecialchars($row['message'])); ?>
-            </div>
-            <div class="message-footer">
-                <!--<em><?php echo date("F j, Y, g:i a", strtotime($row['created_at'])); ?></em>-->
-                <span id="timer-<?php echo $row['id']; ?>" data-delete-at="<?php echo $row['delete_at']; ?>"></span>
+        <div class="row" style="margin-top: 70px ;">
+            <?php while ($row = $result->fetch_assoc()): ?>
+            <div class="col-md-12">
+                <div class="message-card" id="message-card-<?php echo $row['id']; ?>">
+                    <div class="message-header">
+                        <div class="header-title">
+                            <?php echo htmlspecialchars($row['ip_address']); ?>
+                        </div>
 
-                <!-- Delete Button -->
-                <form method="POST" class="d-inline">
-                    <input type="hidden" name="delete_message_id" value="<?php echo $row['id']; ?>">
-                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                </form>
-            </div>
-        </div>
-    </div>
-<?php endwhile; ?>
-</div>
-            <!-- Pagination -->
-            <?php if ($total_pages > 1): // Show pagination only if there are more than 1 page ?>
-                <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
-                    <ul class="pagination pagination-lg">
-                        <!-- Previous Button -->
-                        <?php if ($page > 1): ?>
-                            <li class="page-item">
-                                <a class="page-link rounded-circle shadow-sm" href="?page=<?php echo $page - 1; ?>"
-                                    aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                        <?php endif; ?>
+                        <button class="btn-copy" onclick="copyText('<?php echo $row['id']; ?>')">
+                            <svg class="svgs" id="icon-btn-copy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M15.98,13.96h-4.74c-.13,0-.24-.11-.24-.24V7.07c0-.13,.11-.24,.24-.24h4.74c.13,0,.24,.11,.24,.24v6.64c0,.13-.11,.24-.24,.24Zm-6.77-7.72V14.55c0,.66,.53,1.19,1.19,1.19h6.41c.66,0,1.19-.53,1.19-1.19V6.24c0-.66-.53-1.19-1.19-1.19h-6.41c-.66,0-1.19,.53-1.19,1.19Z">
+                                </path>
+                                <path
+                                    d="M15.68,18.95H7.19c-.66,0-1.19-.53-1.19-1.19V7.37c0-.49,.4-.89,.89-.89s.89,.4,.89,.89v9.57c0,.13,.1,.23,.23,.23h7.67c.49,0,.89,.4,.89,.89s-.4,.89-.89,.89Z">
+                                </path>
+                            </svg>
+                        </button>
 
-                        <!-- Page Numbers -->
-                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                            <li class="page-item <?php if ($page == $i)
-                                echo 'active'; ?>">
-                                <a class="page-link rounded-circle shadow-sm" href="?page=<?php echo $i; ?>">
-                                    <?php echo $i; ?>
-                                </a>
-                            </li>
-                        <?php endfor; ?>
 
-                        <!-- Next Button -->
-                        <?php if ($page < $total_pages): ?>
-                            <li class="page-item">
-                                <a class="page-link rounded-circle shadow-sm" href="?page=<?php echo $page + 1; ?>"
-                                    aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        <?php endif; ?>
-                    </ul>
-                </nav>
-            <?php endif; ?>
-        <?php else: ?>
-            <h4>
-                <p class="text-muted text-center mt-2">No messages yet.</p>
-            </h4>
-        <?php endif; ?>
+                        <label class="toggle-wrap">
+                            <input type="checkbox" checked onclick="toggleWrap('<?php echo $row['id']; ?>')">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div id="message-<?php echo $row['id']; ?>" class="message-content wrapped">
+                        <?php echo nl2br(htmlspecialchars($row['message'])); ?>
+                    </div>
+                    <div class="message-footer">
+                        <span id="timer-<?php echo $row['id']; ?>"
+                            data-delete-at="<?php echo $row['delete_at']; ?>"></span>
+                        <form method="POST" class="d-inline">
+                            <input type="hidden" name="delete_message_id" value="<?php echo $row['id']; ?>">
+                            <!-- <button type="submit" class="btn btn-danger btn-sm">Delete</button> -->
 
-<!-- Modal -->
-<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="compilerModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h5 class="modal-title" id="compilerModalLabel">
-                    <i class="bi bi-chat-dots-fill"></i> <span class="fw-bold">Post Your Message</span>
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <!-- Modal Body -->
-            <form id="messageForm" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>">
-                <div class="modal-body bg-light text-black">
-                    <div class="compiler-container">
-                        <textarea 
-                            id="messageInput" 
-                            placeholder="Type your message here..." 
-                            class="form-control text-black bg-light border-0" 
-                            name="message" 
-                            rows="10" 
-                            required>
-                        </textarea>
+                            <button class="btn-delete" onclick="deleteAction()">
+                                <svg class="icon-delete" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path
+                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                    </path>
+                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                </svg>
+                            </button>
+                        </form>
                     </div>
                 </div>
-                <!-- Modal Footer -->
-                <div class="modal-footer">
-                    <span id="lineCount" class="ms-start">Total Lines: 0</span>
-                    <!--<button type="button" class="btn btn-danger" data-bs-dismiss="modal">-->
-                    <!--    <i class="bi bi-x-circle-fill"></i> Close-->
-                    <!--</button>-->
-                     <button type="submit" class="btn btn-model">
-                        <i class="bi bi-send-fill"></i> Post Message
-                    </button>
-                     <!--<button type="button" id="postMessageBtn" class="btn btn-model">Post Message</button>-->
+            </div>
+
+            <?php endwhile; ?>
+        </div>
+        <!-- Pagination -->
+        <?php if ($total_pages > 1): // Show pagination only if there are more than 1 page ?>
+        <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
+            <ul class="pagination pagination-lg">
+                <!-- Previous Button -->
+                <?php if ($page > 1): ?>
+                <li class="page-item">
+                    <a class="page-link rounded-circle shadow-sm" href="?page=<?php echo $page - 1; ?>"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <?php endif; ?>
+
+                <!-- Page Numbers -->
+                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                <li class="page-item <?php if ($page == $i)
+                                echo 'active'; ?>">
+                    <a class="page-link rounded-circle shadow-sm" href="?page=<?php echo $i; ?>">
+                        <?php echo $i; ?>
+                    </a>
+                </li>
+                <?php endfor; ?>
+
+                <!-- Next Button -->
+                <?php if ($page < $total_pages): ?>
+                <li class="page-item">
+                    <a class="page-link rounded-circle shadow-sm" href="?page=<?php echo $page + 1; ?>"
+                        aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <?php endif; ?>
+            </ul>
+        </nav>
+        <?php endif; ?>
+        <?php else: ?>
+        <!-- <h4>
+            <p class="text-muted text-center" style="margin-top: 120px;">No messages yet.</p>
+        </h4> -->
+
+        <div class="container mb-3">
+        <div class="row" style="margin-top: 70px;">
+            <div class="col-md-12">
+                <div class="guide-card">
+                    <div class="guide-header">
+                        <h2>Welcome to Our Platform!</h2>
+                    </div>
+                    <div class="guide-content">
+                        <p>Our platform is designed to help you share messages efficiently and securely. Whether you're here to post updates, communicate with others, or simply explore, we've got you covered.</p>
+                        <h3>How It Works</h3>
+                        <ul>
+                            <li>Click on the "Post a Message" button to share your thoughts.</li>
+                            <li>Each message has a unique ID and can be copied with the copy button.</li>
+                            <li>Use the toggle switch to show or hide message details.</li>
+                            <li>Messages are time-sensitive and will be automatically deleted after a set period.</li>
+                        </ul>
+                        <h3>Getting Started</h3>
+                        <p>Begin by clicking the "Post a Message" button. Enter your message, and once posted, it will appear here with a timer indicating its expiry.</p>
+                        <p>If you need to delete a message, simply click the delete button, and it will be removed immediately.</p>
+                    </div>
+                    <div class="guide-footer">
+                        <p>We hope you enjoy using our platform! If you have any questions, feel free to reach out.</p>
+                    </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
 
 
+        <?php endif; ?>
 
+        <!-- Modal -->
+        <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="compilerModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="compilerModalLabel">
+                            <i class="bi bi-chat-dots-fill"></i> <span class="fw-bold">Post Your Message</span>
+                        </h5>
+                        <button type="button" class="btn-close" style="color: red;" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <!-- Modal Body -->
+                    <form id="messageForm" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>">
+                        <div class="modal-body bg-light text-black">
+                            <div class="compiler-container">
+                                <textarea id="messageInput" placeholder="Type your message here..."
+                                    class="form-control text-black bg-light border-0" name="message" rows="10"
+                                    required></textarea>
+                            </div>
+                        </div>
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <span id="lineCount" class="ms-start">Total Lines: 0</span>
+                            <button type="submit" class="btn btn-model">
+                                <i class="bi bi-send-fill"></i> Post Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-
-    <?php else: ?>
+        <?php else: ?>
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                Swal.fire({
-                    title: 'Limit Reached!',
-                    text: 'You have reached the daily message limit. Please log in to post more messages.',
-                    icon: 'warning',
-                    confirmButtonText: 'Login',
-                    showCancelButton: true,
-                    cancelButtonText: 'Signup',
-                    customClass: {
-                        confirmButton: 'btn btn-primary',
-                        cancelButton: 'btn btn-secondary'
-                    },
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = './php/login.php';
-                    } else if (result.dismiss === Swal.DismissReason.cancel) {
-                        window.location.href = './php/signup.php';
-                    }
-                });
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                title: 'Limit Reached!',
+                text: 'You have reached the daily message limit. Please log in to post more messages.',
+                icon: 'warning',
+                confirmButtonText: 'Login',
+                showCancelButton: true,
+                cancelButtonText: 'Signup',
+                customClass: {
+                    confirmButton: 'btn btn-primary',
+                    cancelButton: 'btn btn-secondary'
+                },
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = './php/login.php';
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    window.location.href = './php/signup.php';
+                }
             });
+        });
         </script>
-    <?php endif; ?>
-</div>
+        <?php endif; ?>
+    </div>
 
 
     <!-- Scroll-Up Button -->
@@ -735,237 +434,91 @@ input:checked + .slider:before {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        const scrollUpBtn = document.getElementById("scrollUpBtn");
+    document.addEventListener('DOMContentLoaded', function() {
+        const messageInput = document.getElementById('messageInput');
+        const lineNumbers = document.getElementById('lineNumbers');
 
-        window.onscroll = function () {
-            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-                scrollUpBtn.style.display = "block";
-            } else {
-                scrollUpBtn.style.display = "none";
+        const updateLineNumbers = () => {
+            const messageInput = document.getElementById('messageInput');
+            const lineNumbers = document.getElementById('lineNumbers');
+            const totalLines = messageInput.value.split('\n').length;
+            lineNumbers.innerText = '';
+
+            for (let i = 1; i <= totalLines; i++) {
+                const line = document.createElement('pre');
+                line.textContent = i;
+                lineNumbers.appendChild(line);
             }
         };
 
-        scrollUpBtn.onclick = function () {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        };
-    </script>
-
-    <script>
-        // Message Timer Functionality
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.message-footer span[data-delete-at]').forEach(function (timerElement) {
-                const deleteAt = new Date(timerElement.dataset.deleteAt);
-                const timerId = setInterval(function () {
-                    const now = new Date();
-                    const diff = deleteAt - now;
-                    if (diff <= 0) {
-                        clearInterval(timerId);
-                        const messageCard = timerElement.closest('.message-card');
-                        if (messageCard) {
-                            messageCard.classList.add('hidden');
-                        }
-                    }
-                }, 1000);
-            });
+        messageInput.addEventListener('scroll', () => {
+            lineNumbers.scrollTop = messageInput.scrollTop;
         });
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        messageInput.addEventListener('input', updateLineNumbers);
+
+        updateLineNumbers();
+    });
+
+
+    function countLines() {
+        var text = document.getElementById('messageInput').value;
+        var lines = text.split('\n').length;
+        document.getElementById('lineCount').textContent = "Total Lines: " + lines;
+    }
+
+    document.getElementById('messageInput').addEventListener('input', countLines);
+
+    document.getElementById('messageModal').addEventListener('shown.bs.modal', function() {
+        countLines(); // Update line count when modal is opened
+    });
     </script>
 
-
     <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                let messages = document.querySelectorAll('[id^="message-card-"]');
-            let currentMessage = 0;
-            const messageInterval = 2000;
-
-            function showNextMessage() {
-                    if (messages[currentMessage]) {
-                messages[currentMessage].classList.remove('hidden');
-            currentMessage++;
-                    }
-                }
-
-            let messageIntervalID = setInterval(showNextMessage, messageInterval);
-                
-                messages.forEach((message) => {
-                message.addEventListener('mouseenter', () => {
-                    clearInterval(messageIntervalID);
-                });
-                    
-                    message.addEventListener('mouseleave', () => {
-                messageIntervalID = setInterval(showNextMessage, messageInterval);
-                    });
-                });
-                
-                document.querySelectorAll('[id^="timer-"]').forEach(timer => {
-                    const deleteAt = new Date(timer.getAttribute('data-delete-at')).getTime();
-                
-                    const updateTimer = () => {
-                    const now = new Date().getTime();
-            const distance = deleteAt - now;
-
-            if (distance < 0) {
-                timer.innerHTML = "Message will be expired soon";
-                    } else {
-                        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            timer.innerHTML = `Deleting in: ${minutes}m ${seconds}s`;
-                    }
-                };
-
-            setInterval(updateTimer, 1000);
-            });
-        });
-
-            function copyText(id) {
-            const content = document.getElementById(`message-${id}`).textContent;
-            const textarea = document.createElement('textarea');
-            textarea.value = content;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            alert('Text copied to clipboard');
-        }
-
-            function copyText(id) {
-            const content = document.getElementById(`message-${id}`).textContent;
-            const textarea = document.createElement('textarea');
-            textarea.value = content;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-        }
-    </script>
-    <script>
-        $('#messageModal').on('shown.bs.modal', function () {
+    $(document).ready(function() {
+        $('#messageModal').on('shown.bs.modal', function() {
             $('#messageInput').focus();
         });
-    
-        $('#messageInput').keypress(function (e) {
-            if (e.which === 13 && !e.shiftKey) { // Enter key pressed
-                e.preventDefault();
-                $('#messageForm').submit();
-            }
+
+        $('#postMessageBtn').on('click', function() {
+            $('#messageForm').submit();
         });
-    </script>
 
-    <script>
-            window.addEventListener('scroll', function() {
-        const stickyButton = document.querySelector('.sticky-button');
-        if (window.scrollY > 100) {
-                stickyButton.style.display = 'block'; 
-        } else {
-                stickyButton.style.display = 'none';
-        }
-    });
-            document.addEventListener('DOMContentLoaded', function() {
-                document.querySelector('.sticky-button').style.display = 'block';
-    });
-    </script>
-<script>
+        $('#messageForm').on('submit', function(e) {
+            e.preventDefault();
 
-document.addEventListener('DOMContentLoaded', function () {
-    const messageInput = document.getElementById('messageInput');
-    const lineNumbers = document.getElementById('lineNumbers');
-
-    const updateLineNumbers = () => {
-        const totalLines = messageInput.value.split('\n').length; // Get number of lines
-        lineNumbers.innerHTML = ''; 
-
-        for (let i = 1; i <= totalLines; i++) {
-            const line = document.createElement('pre');
-            line.textContent = i; // Add line number
-            lineNumbers.appendChild(line);
-        }
-    };
-
-    messageInput.addEventListener('scroll', () => {
-        lineNumbers.scrollTop = messageInput.scrollTop; // Sync scroll
-    });
-
-    messageInput.addEventListener('input', updateLineNumbers);
-
-    updateLineNumbers();
-});
-
-
-function countLines() {
-    var text = document.getElementById('messageInput').value;
-    var lines = text.split('\n').length;
-    document.getElementById('lineCount').textContent = "Total Lines: " + lines;
-}
-
-document.getElementById('messageInput').addEventListener('input', countLines);
-
-document.getElementById('messageModal').addEventListener('shown.bs.modal', function() {
-    countLines(); // Update line count when modal is opened
-});
-
-</script>
-
-<script>
-$(document).ready(function () {
-    $('#messageModal').on('shown.bs.modal', function () {
-        $('#messageInput').focus();
-    });
-
-    $('#postMessageBtn').on('click', function () {
-        $('#messageForm').submit();
-    });
-
-    $('#messageForm').on('submit', function (e) {
-        e.preventDefault(); 
-
-        const message = $('#messageInput').val();
-        if (message.trim() === '') {
-            alert('Message cannot be empty!');
-            return;
-        }
-
-        $.ajax({
-            type: 'POST',
-            url: '<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>',
-            data: { message: message },
-            success: function (response) {
-                // alert('Message posted successfully!');
-                location.reload(); // Reload to fetch the new message
-            },
-            error: function () {
-                alert('Failed to post message!');
+            const message = $('#messageInput').val();
+            if (message.trim() === '') {
+                alert('Message cannot be empty!');
+                return;
             }
+
+            $.ajax({
+                type: 'POST',
+                url: '<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>',
+                data: {
+                    message: message
+                },
+                success: function(response) {
+                    // alert('Message posted successfully!');
+                    location.reload(); // Reload to fetch the new message
+                },
+                error: function() {
+                    alert('Failed to post message!');
+                }
+            });
         });
     });
-});
-
-</script>
-
-<script>
-function toggleWrap(id) {
-    const content = document.getElementById(`message-${id}`);
-    if (content) {
-        content.classList.toggle('wrapped');
-    }
-}
-
-</script>
+    </script>
 
 
 
 
-    <!-- Include Bootstrap and SweetAlert2 scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
 
+    <script src="./js/index.js"></script>
 </body>
+
 </html>

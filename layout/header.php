@@ -110,51 +110,148 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_data'])) {
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        <!-- <link rel="stylesheet" href="../datasaver/style.css"> -->
     <link rel="stylesheet" href="path/to/sweetalert2.min.css">
-    <link rel="stylesheet" href="../css/dashboard.css">
+
+    <style>
+        :root {
+    --body-color: #FFFFFF;
+    --nav-background: #4D7D28;
+    /* --nav-background:#F7F7F7; */
+    --nav-text-color: #FFFFFF;
+    /* use with --nav-background:#F7F7F7 */
+    /* --nav-text-color:#333333; */
+    --button-color: #629F33;
+    --secondary-color: #F5F5DC;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--body-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    height: 100vh;
+}
+
+
+
+nav {
+    background-color: var(--nav-background);
+    font-size: 16px !important;
+}
+
+
+
+/* .logo img{
+    max-width: 100px;
+} */
+
+nav a {
+    color: var(--nav-text-color) !important;
+    /* padding: 14px 16px; */
+    display: block;
+    font-weight: 600 !important;
+}
+
+.nav-link {
+    padding: 5px 0px !important;
+    position: relative;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0px;
+    bottom: -7px;
+    width: 0%;
+    height: 5px;
+    background-color: var(--nav-text-color);
+    transition: all .2s ease-in-out;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav_button {
+    width: 150px !important;
+    border-radius: 20px !important;
+    background-color: #629F33;
+    color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.4s ease, transform 0.3s ease;
+}
+
+.nav_button:hover {
+    background-color: #4A7A28;
+    transform: scale(1.05);
+}
+
+@media (max-width: 998px) {
+    .nav-link {
+        display: inline-block !important;
+        margin-bottom: 10px;
+    }
+}
+    </style>
     
 
   </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-blue">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <h1>Dashboard</h1>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 ">
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="../index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../php/view_messages.php">Community Post</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../php/ip_file.php">IP Share</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../php/dashboard.php">Personal Files</a></li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://via.placeholder.com/30" alt="User Avatar" class="rounded-circle me-1">
-                            <!-- Username -->
-                            <?php echo htmlspecialchars($name); ?>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <!-- <li><a class="dropdown-item" href="#">Logout</a></li> -->
-                            <?php
-                            if (isset($_SESSION['email'])) {
-                                echo '<li class="nav-but"><a href="logout.php" class="dropdown-item">Logout</a></li>';
-                            } else {
-                                echo '<li class="nav-but"><a href="signup.php" class="dropdown-item">Sign Up</a></li>';
-                                echo '<li class="nav-but"><a href="login.php" class="dropdown-item">Login</a></li>';
-                            }
-                            ?>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<!-- nav start -->
+
+<nav class="navbar navbar-expand-lg ">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="./index.html">DataSaver <!-- insert logo here:--> <!--  <figure class="logo d-flex align-items-center gap-3"><img src="./logo.png" alt=""></figure> --></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="mx-lg-3 nav-link active" aria-current="page" href="../index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="mx-lg-3 nav-link active" aria-current="page" href="../php/ip_file.php">IP Share</a>
+          </li>
+          <li class="nav-item">
+            <a class="mx-lg-3 nav-link active" aria-current="page" href="../php/dashboard.php">Personal Files</a>
+          </li>
+          <li class="nav-item">
+            <a class="mx-lg-3 nav-link active" aria-current="page" href="#">How It Works</a>
+          </li>
+          <li class="nav-item">
+            <a class="mx-lg-3 nav-link active" aria-current="page" href="#">About Us</a>
+          </li>
+          <li class="nav-item d-none">
+            <a class="mx-lg-2 nav-link active" aria-current="page" href="#">Dashboard</a>
+          </li>
+        </ul>
+        <form class="d-flex" role="search">
+            <?php
+            if (isset($_SESSION['email'])) {
+                echo '<li class="nav_button"><a href="logout.php" class="dropdown-item">Logout</a></li>';
+            } else {
+                echo '<button class="nav_button btn btn-success" type="submit">Login / Sign Up</button>';
+            }
+            ?>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <!-- nav end -->
+
+
+
+
