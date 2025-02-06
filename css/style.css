@@ -1,49 +1,80 @@
 
 body {
-    background-color: #f4f7fc;
-    font-family: 'Arial', sans-serif;
+    --sb-track-color: #ffffff;
+    --sb-thumb-color: #a8a8a8;
+    --sb-size: 9px;
+  }
+  
+  body::-webkit-scrollbar {
+    width: var(--sb-size)
+  }
+  
+  body::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: 10px;
+  }
+  
+  body::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 10px;
+    
+  }
+
+body {
+    background-color: #E3F2FD;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #333;
     margin-top: 80px;
-   
+}
+.pagination.d-none {
+    display: none;
 }
 
-
-.table-responsive {
-    margin-top: 20px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+.pagination-lg .page-link {
+    color: #007bff;
+    background-color: #fff;
+    margin: 20px;
+    border-color: #ddd;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    line-height: 18px;
 }
 
-.table {
-    margin: 0;
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.table th,
-.table td {
-    padding: 15px;
-    text-align: left;
-    vertical-align: middle !important;
-}
-
-.table thead {
+.pagination-lg .page-link:hover {
+    color: #fff;
     background-color: #007bff;
-    color: #ffffff;
+    border-color: #007bff;
+    text-decoration: none;
 }
 
-.table tbody tr:nth-child(even) {
-    background-color: #f8f9fa;
+.pagination-lg .active .page-link {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
 }
 
-.table-hover tbody tr:hover {
-    background-color: #e9ecef;
-    cursor: pointer;
+.pagination-lg .page-item .page-link {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.pagination-lg .page-link:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
 
+.page-item:first-child .page-link {
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+}
+
+.page-item:last-child .page-link {
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+}
 .btn-primary,
 .btn-outline-light {
     font-weight: bold;
@@ -98,7 +129,7 @@ body {
 
 
 .table thead th {
-    background: linear-gradient(90deg, #007bff, #0056b3);
+    background: #424a4b;
     color: white;
     border: none;
     padding: 15px;

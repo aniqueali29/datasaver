@@ -173,6 +173,44 @@ ob_end_flush();
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="./css/index.css" rel="stylesheet">
     <link href="./css/nav.css" rel="stylesheet">
+
+    <style>
+    .dropdown-menu {
+        background-color: #E3F2FD !important;
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        min-width: 180px;
+        padding: 8px 0;
+    }
+
+    .dropdown-item {
+        padding: 10px 20px;
+        font-weight: 500;
+        color: #333 !important;
+        transition: all 0.3s ease-in-out;
+        border-radius: 5px;
+    }
+
+    .dropdown-item:hover {
+        background-color: rgba(255, 255, 255, 0.5);
+        transform: scale(1.05);
+        font-weight: 600;
+    }
+
+    .nav-link.dropdown-toggle {
+        font-weight: bold;
+        color: #333 !important;
+        padding: 8px 15px;
+        border-radius: 5px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .nav-link.dropdown-toggle:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: scale(1.05);
+    }
+    </style>
 </head>
 
 <body>
@@ -203,12 +241,10 @@ ob_end_flush();
                     <li class="nav-item"><a class="nav-link" href="./php/ip_file.php">IP Share</a></li>
                     <li class="nav-item"><a class="nav-link" href="./php/dashboard.php">Personal Files</a></li>
                 </ul>
-                <ul class="navbar-nav">
+                <ul class="navbar-nav" aria-labelledby="userDropdown">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <!-- <img src="https://via.placeholder.com/30" alt="User Avatar" class="rounded-circle me-1"> -->
-                            <!-- Username -->
+                        <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             <?php echo htmlspecialchars($name); ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
@@ -227,6 +263,8 @@ ob_end_flush();
             </div>
         </div>
     </nav>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
     <div class="container mb-3">
@@ -333,32 +371,38 @@ ob_end_flush();
         </h4> -->
 
         <div class="container mb-3">
-        <div class="row" style="margin-top: 70px;">
-            <div class="col-md-12">
-                <div class="guide-card">
-                    <div class="guide-header">
-                        <h2>Welcome to Our Platform!</h2>
-                    </div>
-                    <div class="guide-content">
-                        <p>Our platform is designed to help you share messages efficiently and securely. Whether you're here to post updates, communicate with others, or simply explore, we've got you covered.</p>
-                        <h3>How It Works</h3>
-                        <ul>
-                            <li>Click on the "Post a Message" button to share your thoughts.</li>
-                            <li>Each message has a unique ID and can be copied with the copy button.</li>
-                            <li>Use the toggle switch to show or hide message details.</li>
-                            <li>Messages are time-sensitive and will be automatically deleted after a set period.</li>
-                        </ul>
-                        <h3>Getting Started</h3>
-                        <p>Begin by clicking the "Post a Message" button. Enter your message, and once posted, it will appear here with a timer indicating its expiry.</p>
-                        <p>If you need to delete a message, simply click the delete button, and it will be removed immediately.</p>
-                    </div>
-                    <div class="guide-footer">
-                        <p>We hope you enjoy using our platform! If you have any questions, feel free to reach out.</p>
+            <div class="row" style="margin-top: 70px;">
+                <div class="col-md-12">
+                    <div class="guide-card">
+                        <div class="guide-header">
+                            <h2>Welcome to Our Platform!</h2>
+                        </div>
+                        <div class="guide-content">
+                            <p>Our platform is designed to help you share messages efficiently and securely. Whether
+                                you're here to post updates, communicate with others, or simply explore, we've got you
+                                covered.</p>
+                            <h3>How It Works</h3>
+                            <ul>
+                                <li>Click on the "Post a Message" button to share your thoughts.</li>
+                                <li>Each message has a unique ID and can be copied with the copy button.</li>
+                                <li>Use the toggle switch to show or hide message details.</li>
+                                <li>Messages are time-sensitive and will be automatically deleted after a set period.
+                                </li>
+                            </ul>
+                            <h3>Getting Started</h3>
+                            <p>Begin by clicking the "Post a Message" button. Enter your message, and once posted, it
+                                will appear here with a timer indicating its expiry.</p>
+                            <p>If you need to delete a message, simply click the delete button, and it will be removed
+                                immediately.</p>
+                        </div>
+                        <div class="guide-footer">
+                            <p>We hope you enjoy using our platform! If you have any questions, feel free to reach out.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
         <?php endif; ?>
@@ -435,6 +479,8 @@ ob_end_flush();
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {

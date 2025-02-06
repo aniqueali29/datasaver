@@ -1,10 +1,82 @@
+body {
+    --sb-track-color: #ffffff;
+    --sb-thumb-color: #a8a8a8;
+    --sb-size: 9px;
+}
+
+body::-webkit-scrollbar {
+    width: var(--sb-size)
+}
+
+body::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 10px;
+
+}
+
+
 
 body {
     background-color: #f4f7fc;
     font-family: 'Arial', sans-serif;
     color: #333;
     margin-top: 80px;
-   
+
+}
+
+.pagination.d-none {
+    display: none;
+}
+
+.pagination-lg .page-link {
+    color: #007bff;
+    background-color: #fff;
+    margin: 20px;
+    border-color: #ddd;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    line-height: 18px;
+}
+
+.pagination-lg .page-link:hover {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    text-decoration: none;
+}
+
+.pagination-lg .active .page-link {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.pagination-lg .page-item .page-link {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.pagination-lg .page-link:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.page-item:first-child .page-link {
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+}
+
+.page-item:last-child .page-link {
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
 }
 
 .card {
@@ -57,7 +129,7 @@ body {
 .btn {
     transition: all 0.3s ease;
     border-radius: 30px;
-   
+
 }
 
 
@@ -82,19 +154,19 @@ body {
 @media (max-width: 768px) {
     .table {
         width: 100%;
-       
+
     }
 
     .table-container {
         padding: 15px;
-       
+
     }
 
     .btn {
         width: 100%;
-       
+
         margin-bottom: 10px;
-       
+
     }
 }
 
@@ -110,7 +182,7 @@ body {
 
 .modal-header {
     background-color: #007bff;
-   
+
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
 }
@@ -214,9 +286,9 @@ body {
 
     .modal-footer .btn {
         width: 100%;
-       
+
         margin-bottom: 10px;
-       
+
     }
 }
 
@@ -224,7 +296,7 @@ body {
 .progress {
     height: 30px;
     background-color: #e0f0ff;
-   
+
     border-radius: 15px;
     overflow: hidden;
     margin-top: 20px;
@@ -234,20 +306,20 @@ body {
 
 .progress-bar {
     background-color: #007bff;
-   
+
     height: 100%;
     transition: width 0.4s ease-in-out;
-   
+
     border-radius: 15px 0 0 15px;
-   
+
     line-height: 40px;
-   
+
     color: #fff;
-   
+
     text-align: center;
-   
+
     font-weight: bold;
-   
+
 }
 
 
@@ -256,7 +328,7 @@ body {
     display: block;
     font-size: 14px;
     color: #fff;
-   
+
 }
 
 

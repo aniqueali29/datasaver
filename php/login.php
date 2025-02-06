@@ -127,7 +127,7 @@ $conn->close();
         }
     </style>
 </head>
-<body style="background-color: #4070f4;">
+<body>
 
         
 <div class="alert alert-danger alert-dismissible fade-in" role="alert" id="errorAlert" style="<?php echo empty($error_message) ? 'display: none;' : ''; ?>">
